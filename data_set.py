@@ -32,7 +32,22 @@ class DataSet:
         return input.lower().split(' ')
 
     def polarity_frequencies(self):
-        raise NotImplementedError("Polarity frequencies is not implemented")
+
+        polarity_counts: dict[Polarity, int] = {polarity: 0 for polarity in Polarity}
+
+        for opinion in self.root.findall('.//Opinion'):
+            polarity = opinion.get('polarity')
+
+            assert polarity in polarity_counts, f"Polarity {polarity} is not valid"
+
+            polarity_counts[polarity] += 1
+
+        total = sum(polarity_counts.values())
+
+        return {
+            'counts': polarity_counts,
+            'total': total
+        }
 
 
 if __name__ == "__main__":
