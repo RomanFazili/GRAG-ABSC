@@ -17,4 +17,4 @@ if __name__ == "__main__":
     file_path = input("Enter the path to the XML file: ")
 
     ontology_implementation = OntologyImplementation(file_path)
-    print(ontology_implementation.data)
+    print(ontology_implementation)
