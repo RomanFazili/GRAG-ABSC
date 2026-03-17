@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 import os
 from enum import StrEnum
+from dotenv import load_dotenv
 
 class Polarity(StrEnum):
     POSITIVE = "positive"
@@ -51,6 +52,8 @@ class DataSet:
 
 
 if __name__ == "__main__":
-    file_path = input("Enter the path to the XML file: ")
+    load_dotenv()
+    file_path = os.getenv("PATH_TO_SEMEVAL_16_TRAIN_DATA")
+
     data_set = DataSet(file_path)
     print(data_set.polarity_frequencies())
