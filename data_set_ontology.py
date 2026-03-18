@@ -1,6 +1,9 @@
 import os
+from dotenv import load_dotenv
+from owlready2 import Ontology, get_ontology
 
-class OntologyImplementation:
+
+class DataSetOntology:
 
     def __init__(self, file_path: str):
 
@@ -11,10 +14,11 @@ class OntologyImplementation:
 
         self.file_path = file_path
 
+        self.ontology: Ontology = get_ontology(f"file://{os.path.abspath(self.file_path)}").load()
 
 
 if __name__ == "__main__":
-    file_path = input("Enter the path to the XML file: ")
+    load_dotenv()
+    file_path = os.getenv("PATH_TO_RESTAURANT_ONTOLOGY")
 
-    ontology_implementation = OntologyImplementation(file_path)
-    print(ontology_implementation)
+    data_set = DataSetOntology(file_path)

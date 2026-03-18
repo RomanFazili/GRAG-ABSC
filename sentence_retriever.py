@@ -23,6 +23,8 @@ class SentenceRetriever:
         return self._tokenizer(text)
 
     def BM25_demonstration_selection(self, query_sentence: str, top_k: int):
+        """Use the BM25 algorithm to retrieve the top k most similar sentences 
+        to the query sentence"""
 
         all_sentences: list[str] = self.data_set.all_sentences_as_text
 
@@ -40,10 +42,16 @@ class SentenceRetriever:
 
         return [all_sentences[i] for i in top_indices]
 
+
     def SimCSE_demonstration_selection(self, query_sentence: str, top_k: int):
-        raise NotImplementedError("SimCSE demonstration selection is not implemented")
+        """Use a SimCSE-like SentenceTransformer model to retrieve
+        the top k most similar sentences to the query sentence."""
 
+        raise NotImplementedError("SimCSE demonstration selection is not implemented yet")
 
+    def graph_based_demonstration_selection(self, query_sentence: str, top_k: int, ontology):
+        
+        raise NotImplementedError("Graph-based demonstration selection is not implemented yet")
 
 if __name__ == "__main__":
     load_dotenv()
