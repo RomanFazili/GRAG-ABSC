@@ -49,7 +49,7 @@ class DataSet:
 
 if __name__ == "__main__":
     load_dotenv()
-    file_path = os.getenv("PATH_TO_SEMEVAL_16_TRAIN_DATA")
+    file_path = os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_14_RESTAURANTS_TRAIN_DATA")
 
     data_set = DataSet(file_path)
     print(data_set.polarity_frequencies())
