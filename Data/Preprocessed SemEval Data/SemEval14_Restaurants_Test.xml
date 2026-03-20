@@ -1,0 +1,373 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Reviews>
+    <Review>
+        <sentences>
+            <sentence id="813">
+                <text>All the appetizers and salads were fabulous, the steak was mouth watering and the pasta was delicious!!!</text>
+                <Opinions>
+                    <Opinion target="appetizers" category="" polarity="positive" from_="8" to="18" />
+                    <Opinion target="salads" category="" polarity="positive" from_="23" to="29" />
+                    <Opinion target="steak" category="" polarity="positive" from_="49" to="54" />
+                    <Opinion target="pasta" category="" polarity="positive" from_="82" to="87" />
+                </Opinions>
+            </sentence>
+            <sentence id="1579">
+                <text>And really large portions.</text>
+                <Opinions>
+                    <Opinion target="portions" category="" polarity="positive" from_="17" to="25" />
+                </Opinions>
+            </sentence>
+            <sentence id="2882">
+                <text>The sweet lassi was excellent as was the lamb chettinad and the garlic naan but the rasamalai was forgettable.</text>
+                <Opinions>
+                    <Opinion target="sweet lassi" category="" polarity="positive" from_="4" to="15" />
+                    <Opinion target="lamb chettinad" category="" polarity="positive" from_="41" to="55" />
+                    <Opinion target="garlic naan" category="" polarity="positive" from_="64" to="75" />
+                    <Opinion target="rasamalai" category="" polarity="negative" from_="84" to="93" />
+                </Opinions>
+            </sentence>
+            <sentence id="1609">
+                <text>Service was quick.</text>
+                <Opinions>
+                    <Opinion target="Service" category="" polarity="positive" from_="0" to="7" />
+                </Opinions>
+            </sentence>
+            <sentence id="3018">
+                <text>Oh, don't even let me start with how expensive the bills were!</text>
+                <Opinions>
+                    <Opinion target="bills" category="" polarity="negative" from_="51" to="56" />
+                </Opinions>
+            </sentence>
+            <sentence id="3292">
+                <text>Service is top notch.</text>
+                <Opinions>
+                    <Opinion target="Service" category="" polarity="positive" from_="0" to="7" />
+                </Opinions>
+            </sentence>
+            <sentence id="2041">
+                <text>The best thing I tasted were the lambc hops.</text>
+                <Opinions>
+                    <Opinion target="lambc hops" category="" polarity="positive" from_="33" to="43" />
+                </Opinions>
+            </sentence>
+            <sentence id="3440">
+                <text>Even though its good seafood, the prices are too high.</text>
+                <Opinions>
+                    <Opinion target="seafood" category="" polarity="positive" from_="21" to="28" />
+                    <Opinion target="prices" category="" polarity="negative" from_="34" to="40" />
+                </Opinions>
+            </sentence>
+            <sentence id="870">
+                <text>In addition, the food is very good and the prices are reasonable.</text>
+                <Opinions>
+                    <Opinion target="food" category="" polarity="positive" from_="17" to="21" />
+                    <Opinion target="prices" category="" polarity="positive" from_="43" to="49" />
+                </Opinions>
+            </sentence>
+            <sentence id="2507">
+                <text>The food is great and authentic.</text>
+                <Opinions>
+                    <Opinion target="food" category="" polarity="positive" from_="4" to="8" />
+                </Opinions>
+            </sentence>
+            <sentence id="3081">
+                <text>I recommend the garlic shrimp, okra (bindi), and anything with lamb.</text>
+                <Opinions>
+                    <Opinion target="garlic shrimp" category="" polarity="positive" from_="16" to="29" />
+                    <Opinion target="okra (bindi)" category="" polarity="positive" from_="31" to="43" />
+                    <Opinion target="lamb" category="" polarity="positive" from_="63" to="67" />
+                </Opinions>
+            </sentence>
+            <sentence id="1884">
+                <text>The menu was impressive with selections ranging from a burger, to steak, to escargot.</text>
+                <Opinions>
+                    <Opinion target="menu" category="" polarity="positive" from_="4" to="8" />
+                    <Opinion target="burger" category="" polarity="neutral" from_="55" to="61" />
+                    <Opinion target="steak" category="" polarity="neutral" from_="66" to="71" />
+                    <Opinion target="escargot" category="" polarity="neutral" from_="76" to="84" />
+                </Opinions>
+            </sentence>
+            <sentence id="2077">
+                <text>very good breads as well.</text>
+                <Opinions>
+                    <Opinion target="breads" category="" polarity="positive" from_="10" to="16" />
+                </Opinions>
+            </sentence>
+            <sentence id="201">
+                <text>Anyway, the food is good, the price is right and they have a decent wine list.</text>
+                <Opinions>
+                    <Opinion target="food" category="" polarity="positive" from_="12" to="16" />
+                    <Opinion target="price" category="" polarity="positive" from_="30" to="35" />
+                    <Opinion target="wine list" category="" polarity="positive" from_="68" to="77" />
+                </Opinions>
+            </sentence>
+            <sentence id="3049">
+                <text>The food was lousy -too sweet or too salty and the portions tiny.</text>
+                <Opinions>
+                    <Opinion target="food" category="" polarity="negative" from_="4" to="8" />
+                    <Opinion target="portions" category="" polarity="negative" from_="51" to="59" />
+                </Opinions>
+            </sentence>
+            <sentence id="1242">
+                <text>But the coconut rice was good.</text>
+                <Opinions>
+                    <Opinion target="coconut rice" category="" polarity="positive" from_="8" to="20" />
+                </Opinions>
+            </sentence>
+            <sentence id="2211">
+                <text>And the Tom Kha soup was pathetic.</text>
+                <Opinions>
+                    <Opinion target="Tom Kha soup" category="" polarity="negative" from_="8" to="20" />
+                </Opinions>
+            </sentence>
+            <sentence id="3343">
+                <text>The food now is inconsistent.</text>
+                <Opinions>
+                    <Opinion target="food" category="" polarity="negative" from_="4" to="8" />
+                </Opinions>
+            </sentence>
+            <sentence id="2141">
+                <text>Try the crunchy tuna, it is to die for.</text>
+                <Opinions>
+                    <Opinion target="crunchy tuna" category="" polarity="positive" from_="8" to="20" />
+                </Opinions>
+            </sentence>
+            <sentence id="83">
+                <text>Reasonable prices.</text>
+                <Opinions>
+                    <Opinion target="prices" category="" polarity="positive" from_="11" to="17" />
+                </Opinions>
+            </sentence>
+            <sentence id="3315">
+                <text>Add to that great service and great food at a reasonable price and you have yourself the beginning of a great evening.</text>
+                <Opinions>
+                    <Opinion target="service" category="" polarity="positive" from_="18" to="25" />
+                    <Opinion target="food" category="" polarity="positive" from_="36" to="40" />
+                    <Opinion target="price" category="" polarity="positive" from_="57" to="62" />
+                </Opinions>
+            </sentence>
+            <sentence id="1709">
+                <text>Unfortunately, the food was NOT something to get worked up about.</text>
+                <Opinions>
+                    <Opinion target="food" category="" polarity="negative" from_="19" to="23" />
+                </Opinions>
+            </sentence>
+            <sentence id="193">
+                <text>The food is great and reasonably priced.</text>
+                <Opinions>
+                    <Opinion target="food" category="" polarity="positive" from_="4" to="8" />
+                    <Opinion target="priced" category="" polarity="positive" from_="33" to="39" />
+                </Opinions>
+            </sentence>
+            <sentence id="1293">
+                <text>Their calzones are horrific, bad, vomit-inducing, YUCK.</text>
+                <Opinions>
+                    <Opinion target="calzones" category="" polarity="negative" from_="6" to="14" />
+                </Opinions>
+            </sentence>
+            <sentence id="2105">
+                <text>A few tips: skip the turnip cake, roast pork buns and egg custards.</text>
+                <Opinions>
+                    <Opinion target="turnip cake" category="" polarity="negative" from_="21" to="32" />
+                    <Opinion target="roast pork buns" category="" polarity="negative" from_="34" to="49" />
+                    <Opinion target="egg custards" category="" polarity="negative" from_="54" to="66" />
+                </Opinions>
+            </sentence>
+            <sentence id="2152">
+                <text>The bagels are fabulous.</text>
+                <Opinions>
+                    <Opinion target="bagels" category="" polarity="positive" from_="4" to="10" />
+                </Opinions>
+            </sentence>
+            <sentence id="882">
+                <text>While the ambiance and atmosphere were great, the food and service could have been a lot better.</text>
+                <Opinions>
+                    <Opinion target="ambiance" category="" polarity="positive" from_="10" to="18" />
+                    <Opinion target="atmosphere" category="" polarity="positive" from_="23" to="33" />
+                    <Opinion target="food" category="" polarity="negative" from_="50" to="54" />
+                    <Opinion target="service" category="" polarity="negative" from_="59" to="66" />
+                </Opinions>
+            </sentence>
+            <sentence id="1124">
+                <text>Our waitress was sweet and accomodating, not overbearing.</text>
+                <Opinions>
+                    <Opinion target="waitress" category="" polarity="positive" from_="4" to="12" />
+                </Opinions>
+            </sentence>
+            <sentence id="3020">
+                <text>My goodness, everything from the fish to the rice to the seaweed was absolutely amazing.</text>
+                <Opinions>
+                    <Opinion target="fish" category="" polarity="positive" from_="33" to="37" />
+                    <Opinion target="rice" category="" polarity="positive" from_="45" to="49" />
+                    <Opinion target="seaweed" category="" polarity="positive" from_="57" to="64" />
+                </Opinions>
+            </sentence>
+            <sentence id="3170">
+                <text>Good spreads, great beverage selections and bagels really tasty.</text>
+                <Opinions>
+                    <Opinion target="spreads" category="" polarity="positive" from_="5" to="12" />
+                    <Opinion target="beverage selections" category="" polarity="positive" from_="20" to="39" />
+                    <Opinion target="bagels" category="" polarity="positive" from_="44" to="50" />
+                </Opinions>
+            </sentence>
+            <sentence id="2171">
+                <text>The food options rule.</text>
+                <Opinions>
+                    <Opinion target="food options" category="" polarity="positive" from_="4" to="16" />
+                </Opinions>
+            </sentence>
+            <sentence id="2811">
+                <text>Consistently good Japanese Tapas.</text>
+                <Opinions>
+                    <Opinion target="Japanese Tapas" category="" polarity="positive" from_="18" to="32" />
+                </Opinions>
+            </sentence>
+            <sentence id="339">
+                <text>The sushi was awful!</text>
+                <Opinions>
+                    <Opinion target="sushi" category="" polarity="negative" from_="4" to="9" />
+                </Opinions>
+            </sentence>
+            <sentence id="776">
+                <text>The food was great.</text>
+                <Opinions>
+                    <Opinion target="food" category="" polarity="positive" from_="4" to="8" />
+                </Opinions>
+            </sentence>
+            <sentence id="924">
+                <text>With the theater 2 blocks away we had a delicious meal in a beautiful room.</text>
+                <Opinions>
+                    <Opinion target="meal" category="" polarity="positive" from_="50" to="54" />
+                    <Opinion target="room" category="" polarity="positive" from_="70" to="74" />
+                </Opinions>
+            </sentence>
+            <sentence id="1273">
+                <text>I love the fact that the pizza tastes so good and is so cheap.</text>
+                <Opinions>
+                    <Opinion target="pizza" category="" polarity="positive" from_="25" to="30" />
+                </Opinions>
+            </sentence>
+            <sentence id="179">
+                <text>Service was prompt, friendly and great.</text>
+                <Opinions>
+                    <Opinion target="Service" category="" polarity="positive" from_="0" to="7" />
+                </Opinions>
+            </sentence>
+            <sentence id="109">
+                <text>I haven't eat a lamb chop as delicious as that, the salads are really nice dressed with lemon and extra virgnin olive oil.</text>
+                <Opinions>
+                    <Opinion target="lamb chop" category="" polarity="positive" from_="16" to="25" />
+                    <Opinion target="salads" category="" polarity="positive" from_="52" to="58" />
+                </Opinions>
+            </sentence>
+            <sentence id="1057">
+                <text>Drawbacks: service is slow and they don't toast!</text>
+                <Opinions>
+                    <Opinion target="service" category="" polarity="negative" from_="11" to="18" />
+                </Opinions>
+            </sentence>
+            <sentence id="2451">
+                <text>The prices were fantastic.</text>
+                <Opinions>
+                    <Opinion target="prices" category="" polarity="positive" from_="4" to="10" />
+                </Opinions>
+            </sentence>
+            <sentence id="1548">
+                <text>The food is terrible and overall, I would have to say avoid at all costs.</text>
+                <Opinions>
+                    <Opinion target="food" category="" polarity="negative" from_="4" to="8" />
+                </Opinions>
+            </sentence>
+            <sentence id="134">
+                <text>The food is prepared quickly and efficiently.</text>
+                <Opinions>
+                    <Opinion target="food" category="" polarity="positive" from_="4" to="8" />
+                </Opinions>
+            </sentence>
+            <sentence id="2708">
+                <text>The food is fresh, delicious, and reasonably priced.</text>
+                <Opinions>
+                    <Opinion target="food" category="" polarity="positive" from_="4" to="8" />
+                    <Opinion target="priced" category="" polarity="positive" from_="45" to="51" />
+                </Opinions>
+            </sentence>
+            <sentence id="3575">
+                <text>As we were leaving, the couple standing by the door said to another waiter, we're not in a hurry.</text>
+                <Opinions>
+                    <Opinion target="waiter" category="" polarity="neutral" from_="68" to="74" />
+                </Opinions>
+            </sentence>
+            <sentence id="742">
+                <text>The outdoor atmosphere of sitting on the sidewalk watching the world go by 50 feet away on 6th avenue on a cool evening was wonderful.</text>
+                <Opinions>
+                    <Opinion target="outdoor atmosphere" category="" polarity="positive" from_="4" to="22" />
+                </Opinions>
+            </sentence>
+            <sentence id="1471">
+                <text>A large is $20, and toppings are about $3 each.</text>
+                <Opinions>
+                    <Opinion target="toppings" category="" polarity="neutral" from_="20" to="28" />
+                </Opinions>
+            </sentence>
+            <sentence id="1656">
+                <text>The spicy tuna and salmon are the best we've ever had.</text>
+                <Opinions>
+                    <Opinion target="spicy tuna" category="" polarity="positive" from_="4" to="14" />
+                    <Opinion target="salmon" category="" polarity="positive" from_="19" to="25" />
+                </Opinions>
+            </sentence>
+            <sentence id="3681">
+                <text>The food was very good, a great deal, and the place its self was great.</text>
+                <Opinions>
+                    <Opinion target="food" category="" polarity="positive" from_="4" to="8" />
+                    <Opinion target="place" category="" polarity="positive" from_="46" to="51" />
+                </Opinions>
+            </sentence>
+            <sentence id="2205">
+                <text>The food is usually good but it certainly isn't a relaxing place to go.</text>
+                <Opinions>
+                    <Opinion target="food" category="" polarity="positive" from_="4" to="8" />
+                    <Opinion target="place" category="" polarity="negative" from_="59" to="64" />
+                </Opinions>
+            </sentence>
+            <sentence id="1159">
+                <text>After dinner, take your date to the HUGE dance floor, probably one of the biggest you'll see in NY.</text>
+                <Opinions>
+                    <Opinion target="dinner" category="" polarity="neutral" from_="6" to="12" />
+                    <Opinion target="dance floor" category="" polarity="positive" from_="41" to="52" />
+                </Opinions>
+            </sentence>
+            <sentence id="628">
+                <text>The server was really cool and served us our food and drinks with a smile.</text>
+                <Opinions>
+                    <Opinion target="server" category="" polarity="positive" from_="4" to="10" />
+                    <Opinion target="served" category="" polarity="positive" from_="31" to="37" />
+                    <Opinion target="food" category="" polarity="neutral" from_="45" to="49" />
+                    <Opinion target="drinks" category="" polarity="neutral" from_="54" to="60" />
+                </Opinions>
+            </sentence>
+            <sentence id="2912">
+                <text>The dishes offered were unique, very tasty and fresh from the lamb sausages, sardines with biscuits, large whole shrimp to the amazing pistachio ice cream (the best and freshest I've ever had).</text>
+                <Opinions>
+                    <Opinion target="dishes" category="" polarity="positive" from_="4" to="10" />
+                    <Opinion target="lamb sausages" category="" polarity="positive" from_="62" to="75" />
+                    <Opinion target="sardines with biscuits" category="" polarity="positive" from_="77" to="99" />
+                    <Opinion target="large whole shrimp" category="" polarity="positive" from_="101" to="119" />
+                    <Opinion target="pistachio ice cream" category="" polarity="positive" from_="135" to="154" />
+                </Opinions>
+            </sentence>
+            <sentence id="3188">
+                <text>Went there for an office lunch.</text>
+                <Opinions>
+                    <Opinion target="office lunch" category="" polarity="neutral" from_="18" to="30" />
+                </Opinions>
+            </sentence>
+            <sentence id="3041">
+                <text>We've only eaten in the restaurant once, but we have ordered many times for dinner.</text>
+                <Opinions>
+                    <Opinion target="dinner" category="" polarity="neutral" from_="76" to="82" />
+                </Opinions>
+            </sentence>
+        </sentences>
+    </Review>
+</Reviews>
