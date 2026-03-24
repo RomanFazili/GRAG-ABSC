@@ -1,4 +1,4 @@
-numpy==1.24.2
+numpy>=1.24.2
 owlready2==0.50
 python-dotenv==1.2.2
-rank_bm25==0.2.2
+rank_bm25>=0.2.2
