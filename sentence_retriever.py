@@ -4,6 +4,7 @@ import numpy as np
 from typing import Callable
 from dotenv import load_dotenv
 import os
+from sentence_transformers import SentenceTransformer, util
 
 
 Tokenizer = Callable[[str], list[str]]
@@ -46,8 +47,19 @@ class SentenceRetriever:
     def SimCSE_demonstration_selection(self, query_sentence: str, top_k: int):
         """Use a SimCSE-like SentenceTransformer model to retrieve
         the top k most similar sentences to the query sentence."""
+        model: SentenceTransformer = SentenceTransformer('princeton-nlp/unsup-simcse-bert-base-uncased')
 
-        raise NotImplementedError("SimCSE demonstration selection is not implemented yet")
+        all_sentences: list[str] = self.data_set.all_sentences_as_text
+
+        sentence_embeddings: np.ndarray = model.encode(all_sentences)
+
+        query_embedding: np.ndarray = model.encode([query_sentence])
+
+        scores: np.ndarray = util.pytorch_cos_sim(query_embedding, sentence_embeddings)
+
+        top_indices: np.ndarray = scores[0].argsort(descending=True)[:top_k]
+
+        return [all_sentences[i] for i in top_indices]
 
     def graph_based_demonstration_selection(self, query_sentence: str, top_k: int, ontology):
         
@@ -59,4 +71,4 @@ if __name__ == "__main__":
     data_set = DataSet(file_path)
     sentence_retriever = SentenceRetriever(data_set)
     print(sentence_retriever.BM25_demonstration_selection("The food was good", 3))
-    # print(sentence_retriever.SimCSE_demonstration_selection("The food was good", 3))
+    print(sentence_retriever.SimCSE_demonstration_selection("The food was good", 3))
