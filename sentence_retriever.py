@@ -4,6 +4,7 @@ import numpy as np
 from typing import Callable
 from dotenv import load_dotenv
 import os
+import re
 from sentence_transformers import SentenceTransformer, util
 
 
@@ -11,8 +12,11 @@ Tokenizer = Callable[[str], list[str]]
 
 
 def default_tokenizer(text: str) -> list[str]:
-    return text.lower().split()
-
+    """
+    Better option than splitting on whitespace.
+    This will also tokenize contractions and other words with apostrophes.
+    """
+    return re.findall(r"[a-z0-9]+(?:'[a-z0-9]+)?", text.lower())
 
 class SentenceRetriever:
 
@@ -47,7 +51,7 @@ class SentenceRetriever:
         return [all_sentences_with_aspects_and_polarities[i] for i in top_indices]
 
 
-    def SimCSE_demonstration_selection(self, query_sentence: str, top_k: int):
+    def SimCSE_demonstration_selection(self, query_sentence: str, top_k: int) -> list[str]:
         """Use a SimCSE-like SentenceTransformer model to retrieve
         the top k most similar sentences to the query sentence."""
         model: SentenceTransformer = SentenceTransformer('princeton-nlp/unsup-simcse-bert-base-uncased')
