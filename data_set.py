@@ -29,12 +29,13 @@ class DataSet:
         return [sentence.find('text').text for sentence in self.root.findall('.//sentence')]
 
     @property
-    def all_sentences_with_aspects_and_polarities(self) -> list[tuple[str, str, Polarity]]:
-        return [(
-            sentence.find('text').text, 
-            sentence.find('aspect').text, 
-            Polarity(sentence.find('polarity').text)
-        ) for sentence in self.root.findall('.//sentence')]
+    def all_sentences_with_aspects_and_polarities(self) -> list[tuple[str, list[tuple[str, Polarity]]]]:
+        return [
+            (
+                sentence.find('text').text, 
+                [(aspect.get('target'), Polarity(aspect.get('polarity'))) for aspect in sentence.find('Opinions').findall('Opinion')]
+            ) for sentence in self.root.findall('.//sentence')
+        ]
 
     def polarity_frequencies(self) -> dict:
 
