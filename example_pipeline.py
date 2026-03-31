@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import os
 from ontology_retriever import OntologyRetriever
 from data_set import Polarity
+from rdflib import Graph
 from data_set_ontology import DataSetOntology
 
 top_k = 3
@@ -25,8 +26,11 @@ formatted_demonstration_sentences = "\n".join(
 )
 data_set_ontology = DataSetOntology(os.getenv("PATH_TO_RESTAURANT_ONTOLOGY"))
 ontology_retriever = OntologyRetriever(data_set_ontology)
-ontology_injection = ontology_retriever.verbalize_aspect_category_sentiments_restaurant_type_3(aspect)
-formatted_ontology_injection: str = ontology_injection.serialize(format="xml")
+ontology_injection: Graph = ontology_retriever.verbalize_aspect_category_sentiments_restaurant_type_2(aspect)
+
+# formatted_ontology_injection: str = ontology_injection.serialize(format="xml")
+formatted_ontology_injection: str = ontology_injection.serialize(format="n3")
+# formatted_ontology_injection: str = ontology_injection.serialize(format="nt")
 
 example_prompt_format = f"""
 You must return the sentiment polarity of the following sentence:
