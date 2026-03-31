@@ -51,14 +51,14 @@ class SentenceRetriever:
         return [all_sentences_with_aspects_and_polarities[i] for i in top_indices]
 
 
-    def SimCSE_demonstration_selection(self, query_sentence: str, top_k: int) -> list[str]:
+    def SimCSE_demonstration_selection(self, query_sentence: str, top_k: int) -> list[tuple[str, list[tuple[str, Polarity]]]]:
         """Use a SimCSE-like SentenceTransformer model to retrieve
         the top k most similar sentences to the query sentence."""
         model: SentenceTransformer = SentenceTransformer('princeton-nlp/unsup-simcse-bert-base-uncased')
 
-        all_sentences: list[str] = self.data_set.all_sentences_as_text
+        all_sentences_with_aspects_and_polarities: list[tuple[str, list[tuple[str, Polarity]]]] = self.data_set.all_sentences_with_aspects_and_polarities
 
-        sentence_embeddings: np.ndarray = model.encode(all_sentences)
+        sentence_embeddings: np.ndarray = model.encode([sentence for sentence, _ in all_sentences_with_aspects_and_polarities])
 
         query_embedding: np.ndarray = model.encode([query_sentence])
 
@@ -66,7 +66,7 @@ class SentenceRetriever:
 
         top_indices: np.ndarray = scores[0].argsort(descending=True)[:top_k]
 
-        return [all_sentences[i] for i in top_indices]
+        return [all_sentences_with_aspects_and_polarities[i] for i in top_indices]
 
     def graph_based_demonstration_selection(self, query_sentence: str, top_k: int, ontology):
         
@@ -78,6 +78,4 @@ if __name__ == "__main__":
     data_set = DataSet(file_path)
     sentence_retriever = SentenceRetriever(data_set)
     print(sentence_retriever.BM25_demonstration_selection("The food was good", 3))
-
-    exit()
     print(sentence_retriever.SimCSE_demonstration_selection("The food was good", 3))
