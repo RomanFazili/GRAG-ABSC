@@ -13,11 +13,6 @@ class OntologySelectionMethod(Enum):
     Partial = "Partial"
     Full = "Full"
 
-class PromptFormat(Enum):
-    Type1 = "Type1"
-    Type2 = "Type2"
-    Type3 = "Type3"
-
 class OntologyFormat(Enum):
     XML = "xml"
     N3 = "n3"
@@ -56,8 +51,11 @@ class PromptBuilder:
         ontology_selection_method: OntologySelectionMethod, 
         ontology_filepath: str, 
         ontology_format: OntologyFormat,
-        prompt_format: PromptFormat
     ) -> str:
+
+        assert isinstance(demonstration_selection_method, DemonstrationSelectionMethod)
+        assert isinstance(ontology_selection_method, OntologySelectionMethod)
+        assert isinstance(ontology_format, OntologyFormat)
 
         sentence_retriever = SentenceRetriever(DataSet(train_data_filepath))
 
@@ -68,7 +66,6 @@ class PromptBuilder:
                 input_sentence, top_k
             )
         elif demonstration_selection_method == DemonstrationSelectionMethod.SimCSE:
-            raise NotImplementedError("SimCSE demonstration selection is not implemented yet, still needs to return aspect and polarity")
             demonstration_sentences = sentence_retriever.SimCSE_demonstration_selection(
                 input_sentence, top_k
             )
@@ -85,14 +82,12 @@ class PromptBuilder:
 
         selected_ontology: Graph | None = None
         if ontology_selection_method == OntologySelectionMethod.Nothing:
-            selected_ontology: Graph = None
+            selected_ontology = None
         elif ontology_selection_method == OntologySelectionMethod.Partial:
             raise NotImplementedError("Partial ontology selection method is not implemented yet")
-            selected_ontology: Graph = ontology_retriever.verbalize_aspect_category_sentiments_restaurant_type_1()
+            selected_ontology = ontology_retriever.verbalize_aspect_category_sentiments_restaurant_type_1()
         elif ontology_selection_method == OntologySelectionMethod.Full:
-            selected_ontology: Graph = ontology_retriever.data_set_ontology.get_rdflib_graph()
-        else:
-            raise ValueError(f"Invalid ontology selection method: {ontology_selection_method}")
+            selected_ontology = ontology_retriever.data_set_ontology.get_rdflib_graph()
 
         
         formatted_ontology: str | None = None
@@ -103,26 +98,25 @@ class PromptBuilder:
                 formatted_ontology = selected_ontology.serialize(format="n3")
             elif ontology_format == OntologyFormat.NT:
                 formatted_ontology = selected_ontology.serialize(format="nt")
-            else:
-                raise ValueError(f"Invalid ontology format: {ontology_format}")
 
 
-        if prompt_format == PromptFormat.Type1:
-            prompt = PromptBuilder._build_prompt_type1(
-                input_sentence=input_sentence,
-                aspect=aspect,
-                formatted_demonstrations=formatted_demonstrations,
-                formatted_ontology=formatted_ontology,
-            )
-        else:
-            raise NotImplementedError("Prompt format is not implemented yet")
+        prompt = PromptBuilder._build_prompt(
+            input_sentence=input_sentence,
+            aspect=aspect,
+            formatted_demonstrations=formatted_demonstrations,
+            formatted_ontology=formatted_ontology,
+        )
 
         return prompt
 
     @staticmethod
     def _format_demonstrations(
         demonstration_sentences: list[tuple[str, list[tuple[str, Polarity]]]]
-    ) -> str:
+    ) -> str | None:
+
+        if not demonstration_sentences:
+            return None
+
         return "\n".join(
             [
                 f"Sentence: {sentence}\nAspects and Polarities: {[(aspect, str(polarity)) for aspect, polarity in aspects_and_polarities]}"
@@ -131,10 +125,10 @@ class PromptBuilder:
         )
 
     @staticmethod
-    def _build_prompt_type1(
+    def _build_prompt(
         input_sentence: str,
         aspect: str,
-        formatted_demonstrations: str,
+        formatted_demonstrations: str | None,
         formatted_ontology: str | None
     ) -> str:
 
@@ -142,10 +136,14 @@ class PromptBuilder:
             f"You must return the sentiment polarity of the following sentence:\n"
             f"{input_sentence}\n"
             f"With the given aspect of {aspect}\n"
-            "\n"
-            f"You may use these demonstration sentences with the given aspects and polarities to help you:\n"
-            f"{formatted_demonstrations}\n"
         )
+
+        if formatted_demonstrations:
+            prompt += (
+                "\n"
+                f"You may use these demonstration sentences with the given aspects and polarities to help you:\n"
+                f"{formatted_demonstrations}\n"
+            )
 
         if formatted_ontology:
             prompt += (
@@ -160,15 +158,14 @@ if __name__ == "__main__":
     load_dotenv()
 
     prompt = PromptBuilder.build_prompt(
-        input_sentence="The food was good",
+        input_sentence="The restaurant had a nice atmosphere and the food was adequate as well.",
         aspect="food",
-        demonstration_selection_method=DemonstrationSelectionMethod.BM25,
+        demonstration_selection_method=DemonstrationSelectionMethod.SimCSE,
         top_k=3,
         train_data_filepath=os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TRAIN_DATA"),
-        ontology_selection_method=OntologySelectionMethod.Nothing,
+        ontology_selection_method=OntologySelectionMethod.Partial,
         ontology_filepath=os.getenv("PATH_TO_RESTAURANT_ONTOLOGY"),
         ontology_format=OntologyFormat.XML,
-        prompt_format=PromptFormat.Type1,
     )
 
     print(prompt)
@@ -181,5 +178,4 @@ if __name__ == "__main__":
     #                 for top_k in [0, 3]:
     #                     for ontology_selection_method in OntologySelectionMethod:
     #                         for ontology_format in OntologyFormat:
-    #                             # for prompt_format in PromptFormat:
-    #                                 for ai_model in [...]
+#                                 for ai_model in [...]
