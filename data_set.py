@@ -28,6 +28,14 @@ class DataSet:
     def all_sentences_as_text(self) -> list[str]:
         return [sentence.find('text').text for sentence in self.root.findall('.//sentence')]
 
+    @property
+    def all_sentences_with_aspects_and_polarities(self) -> list[tuple[str, str, Polarity]]:
+        return [(
+            sentence.find('text').text, 
+            sentence.find('aspect').text, 
+            Polarity(sentence.find('polarity').text)
+        ) for sentence in self.root.findall('.//sentence')]
+
     def polarity_frequencies(self) -> dict:
 
         polarity_counts: dict[Polarity, int] = {polarity: 0 for polarity in Polarity}

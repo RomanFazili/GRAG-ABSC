@@ -1,4 +1,4 @@
-from data_set import DataSet
+from data_set import DataSet, Polarity
 from rank_bm25 import BM25Okapi
 import numpy as np
 from typing import Callable
@@ -23,14 +23,17 @@ class SentenceRetriever:
     def tokenize(self, text: str) -> list[str]:
         return self._tokenizer(text)
 
-    def BM25_demonstration_selection(self, query_sentence: str, top_k: int):
-        """Use the BM25 algorithm to retrieve the top k most similar sentences 
-        to the query sentence"""
+    def BM25_demonstration_selection(self, query_sentence: str, top_k: int) -> list[tuple[str, str, Polarity]]:
+        """
+        Use the BM25 algorithm to retrieve the top k most similar sentences 
+        to the query sentence.
+        Returns a list of tuples containing the sentence, the aspect, and the polarity.
+        """
 
-        all_sentences: list[str] = self.data_set.all_sentences_as_text
+        all_sentences_with_aspects_and_polarities: list[tuple[str, str, Polarity]] = self.data_set.all_sentences_with_aspects_and_polarities
 
         tokenized_train_data: list[list[str]] = [
-            self.tokenize(sentence) for sentence in all_sentences
+            self.tokenize(sentence) for sentence, _, _ in all_sentences_with_aspects_and_polarities
         ]
         tokenized_query: list[str] = self.tokenize(query_sentence)
 
@@ -41,7 +44,7 @@ class SentenceRetriever:
         # Invert and get the k most similar sentences
         top_indices: np.ndarray = scores.argsort()[-top_k:][::-1]
 
-        return [all_sentences[i] for i in top_indices]
+        return [(all_sentences_with_aspects_and_polarities[i][0], all_sentences_with_aspects_and_polarities[i][1], all_sentences_with_aspects_and_polarities[i][2]) for i in top_indices]
 
 
     def SimCSE_demonstration_selection(self, query_sentence: str, top_k: int):
@@ -71,4 +74,6 @@ if __name__ == "__main__":
     data_set = DataSet(file_path)
     sentence_retriever = SentenceRetriever(data_set)
     print(sentence_retriever.BM25_demonstration_selection("The food was good", 3))
+
+    exit()
     print(sentence_retriever.SimCSE_demonstration_selection("The food was good", 3))
