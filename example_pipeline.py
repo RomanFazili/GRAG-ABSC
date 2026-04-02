@@ -1,3 +1,4 @@
+from openrouter import OpenRouter
 import prompt_builder
 from data_set import DataSet
 from prompt_builder import PromptBuilder
@@ -33,15 +34,14 @@ def client_response(client, model, prompt) -> Polarity:
         raise ValueError(f"Could not extract polarity from response: {response.choices[0].message.content}")
 
 
-def store_prediction(sentence_id: str, sentence_text: str, aspect: str, predicted_polarity: Polarity, true_polarity: Polarity) -> dict:
+def store_prediction(sentence_text: str, aspect: str, predicted_polarity: Polarity, true_polarity: Polarity) -> dict:
     """Store a single prediction result"""
     return {
-        "sentence_id": sentence_id,
         "sentence_text": sentence_text,
         "aspect": aspect,
         "predicted_polarity": str(predicted_polarity),
         "true_polarity": str(true_polarity),
-        "is_correct": predicted_polarity == true_polarity
+        "is_correct": true_polarity == predicted_polarity
     }
 
 
@@ -102,21 +102,20 @@ def save_predictions_to_file(predictions: list[dict], filepath: str):
 
 # print(example_prompt_format)
 
+
+# Top part of main (now unused) for single predictions, bottom part for predictions over full dataset
 if __name__ == "__main__":
     load_dotenv()
-    file_path = os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TRAIN_DATA")
+    file_path = os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TEST_DATA")
     data_set = DataSet(file_path)
     sentence_retriever = SentenceRetriever(data_set)
 
     # client and model example, probably move later
-    openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-    model_gpt54 = "gpt-5.4-mini"
-
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    model = "gpt-5.4-mini"
 
     predictions: list[dict] = []
 
-    test_sentence = 'The space is limited so be prepared to wait up to 45 minutes - 1 hour, but be richly rewarded when you savor the delicious indo-chinese food.'
-    test_aspect = 'space'
     demonstration_selection_method = prompt_builder.DemonstrationSelectionMethod.BM25
     top_k = 3
     train_data_filepath = os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TRAIN_DATA")
@@ -124,20 +123,49 @@ if __name__ == "__main__":
     ontology_filepath = os.getenv("PATH_TO_RESTAURANT_ONTOLOGY")
     ontology_format = prompt_builder.OntologyFormat.XML
 
-    prompt = PromptBuilder.build_prompt(test_sentence, test_aspect, demonstration_selection_method, top_k, train_data_filepath, ontology_selection_method, ontology_filepath, ontology_format)
-    predicted_polarity = client_response(openai_client, model_gpt54, prompt)
+    i=0
+    for sentence_text, aspects_with_true_polarities in data_set.all_sentences_with_aspects_and_polarities:
+        i+=1
+        if i>120:
+            break
+        for aspect, true_polarity in aspects_with_true_polarities:
+            prompt = PromptBuilder.build_prompt(
+                sentence_text,
+                aspect,
+                demonstration_selection_method,
+                top_k,
+                train_data_filepath,
+                ontology_selection_method,
+                ontology_filepath,
+                ontology_format
+            )
 
-    # prediction = store_prediction()
-    # predictions.append(prediction)
+            predicted_polarity = client_response(client, model, prompt)
 
-    print(prompt)
-    print(predicted_polarity)
+            prediction = store_prediction(
+                sentence_text=sentence_text,
+                aspect=aspect,
+                predicted_polarity=predicted_polarity,
+                true_polarity=true_polarity
+            )
+            predictions.append(prediction)
 
-# # Calculate F1 scores
-# f1_results = calculate_f1_scores(predictions)
-# print(f"Macro F1: {f1_results['macro_f1']:.4f}")
-# print(f"Weighted F1: {f1_results['weighted_f1']:.4f}")
-# print(f"Accuracy: {f1_results['accuracy']:.4f}")
-# 
-# # Save predictions for later analysis
-# save_predictions_to_file(predictions, "predictions.json")
+    f1_results = calculate_f1_scores(predictions)
+    print(f"\n=== Results ===")
+    print(f"Macro F1: {f1_results['macro_f1']:.4f}")
+    print(f"Weighted F1: {f1_results['weighted_f1']:.4f}")
+    print(f"Accuracy: {f1_results['accuracy']:.4f}")
+    print(f"Correct: {f1_results['correct_predictions']} / {f1_results['total_predictions']}")
+
+
+
+    # The part art below is only for testing sentences individually
+
+    # test_sentence = 'The space is limited so be prepared to wait up to 45 minutes - 1 hour, but be richly rewarded when you savor the delicious indo-chinese food.'
+    # test_aspect = 'space'
+
+    # prompt = PromptBuilder.build_prompt(test_sentence, test_aspect, demonstration_selection_method, top_k, train_data_filepath, ontology_selection_method, ontology_filepath, ontology_format)
+    # predicted_polarity = client_response(openai_client, model_gpt54, prompt)
+    #
+    # print(prompt)
+    # print(predicted_polarity)
