@@ -6,6 +6,7 @@ from ontology_retriever import OntologyRetriever
 from data_set import Polarity
 from rdflib import Graph
 from data_set_ontology import DataSetOntology
+from openai import OpenAI
 
 top_k = 3
 
@@ -16,6 +17,25 @@ load_dotenv()
 file_path = os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TRAIN_DATA")
 data_set = DataSet(file_path)
 sentence_retriever = SentenceRetriever(data_set)
+
+# client and model example, probably move later
+openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+model_gpt54 = "gpt-5.4-mini"
+
+def client_response(client, model, prompt):
+    """"Returns response from openAI client based on the given prompt"""
+    response = client.chat.completions.create(
+    model = model,
+    messages = [{"role": "user", "content": prompt}]
+    )
+    return response.choices[0].message.content
+
+def assignPolarities():
+    "Lets the client_response function assign polarities to aspects"
+
+def calculateF1(test_data, predictions):
+    """Calculates weighted and/or macro F1 score"""
+
 
 demonstration_sentences: list[tuple[str, list[tuple[str, Polarity]]]] = sentence_retriever.BM25_demonstration_selection(input_sentence, top_k)
 formatted_demonstration_sentences = "\n".join(
