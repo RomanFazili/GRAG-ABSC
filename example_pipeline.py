@@ -25,13 +25,11 @@ model_gpt54 = "gpt-5.4-mini"
 def client_response(client, model, prompt):
     """"Returns response from openAI client based on the given prompt"""
     response = client.chat.completions.create(
-    model = model,
-    messages = [{"role": "user", "content": prompt}]
+        model = model,
+        messages = [{"role": "user", "content": prompt}]
     )
     return response.choices[0].message.content
 
-def assignPolarities():
-    "Lets the client_response function assign polarities to aspects"
 
 def calculateF1(test_data, predictions):
     """Calculates weighted and/or macro F1 score"""
