@@ -14,13 +14,15 @@ from sklearn.metrics import f1_score, classification_report
 import json
 
 
-def client_response(client, model, prompt) -> Polarity:
+def client_response(client: OpenAI, model: str, prompt: str) -> Polarity:
     """Returns Polarity from openAI client based on the given prompt"""
     response = client.chat.completions.create(
         model = model,
         messages = [{"role": "user", "content": prompt}]
     )
     response_text = response.choices[0].message.content.lower().strip()
+
+    raise NotImplementedError("Client response is not implemented yet, we don't yet know how to let the model respond")
     
     # Extract polarity from response
     if "positive" in response_text:
