@@ -118,20 +118,15 @@ class OntologyRetriever:
         first_part = aspect_category.split("#", 1)[0].strip().capitalize()
         return f'{first_part}Mention'
 
-    def verbalize_aspect_category_sentiments_restaurant_type_2_old(self, aspect_category: str) -> Graph:
+    def verbalize_aspect_category_sentiments_restaurant_type_2(self, aspect_category: str) -> Graph:
         """
-        Given an aspect category (e.g. FOOD#STYLE_OPTIONS), find the corresponding
-        mention class (FoodMention), climb to the ancestor whose direct parent is
-        EntityMention, then select classes that are descendants of that ancestor
-        and also descendants of Positive/Negative/Neutral.
+        Given an aspect category (e.g. AMBIENCE#GENERAL), find the owl:Class with that aspect
+        annotation, walk up to the pivot directly under EntityMention, then select classes
+        that are strict descendants of that pivot and of Positive/Negative/Neutral.
         """
-
-        raise NotImplementedError("This method is deprecated, use verbalize_aspect_category_sentiments_restaurant_type_2 instead.")
-
-        mention_local_name = self._aspect_to_mention_local_name(aspect_category)
         g: Graph = self.data_set_ontology.get_rdflib_graph()
         base_ns = "http://www.kimschouten.com/sentiment/restaurant#"
-        mention_uri = f"{base_ns}{mention_local_name}"
+        aspect_uri = f"{base_ns}aspect"
         entity_mention_uri = f"{base_ns}EntityMention"
         positive_uri = f"{base_ns}Positive"
         negative_uri = f"{base_ns}Negative"
@@ -139,23 +134,34 @@ class OntologyRetriever:
 
         sparql_query = f"""
         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX owl: <http://www.w3.org/2002/07/owl#>
 
         CONSTRUCT {{
           ?cls ?p ?o .
         }}
         WHERE {{
-          # Find the ancestor on the mention path whose direct parent is EntityMention.
-          <{mention_uri}> rdfs:subClassOf* ?pivot .
-          ?pivot rdfs:subClassOf <{entity_mention_uri}> .
+          {{
+            # Find the annotated class.
+            ?mention a owl:Class ;
+                     <{aspect_uri}> "{aspect_category}" .
 
-          # Keep classes under that pivot...
-          ?cls rdfs:subClassOf+ ?pivot .
-          # ...and also descendants of Positive OR Negative OR Neutral.
-          ?cls rdfs:subClassOf+ ?polarityRoot .
-          VALUES ?polarityRoot {{
-            <{positive_uri}>
-            <{negative_uri}>
-            <{neutral_uri}>
+            # Ascend from the annotated class to the direct subclass of EntityMention.
+            ?mention rdfs:subClassOf* ?pivot .
+            ?pivot rdfs:subClassOf <{entity_mention_uri}> .
+
+            # Descendants of that pivot under a polarity root.
+            ?cls rdfs:subClassOf+ ?pivot .
+            ?cls rdfs:subClassOf+ ?polarityRoot .
+            VALUES ?polarityRoot {{
+              <{positive_uri}>
+              <{negative_uri}>
+              <{neutral_uri}>
+            }}
+          }}
+          UNION
+          {{
+            ?cls a owl:Class ;
+                 <{aspect_uri}> "{aspect_category}" .
           }}
           ?cls ?p ?o .
         }}
@@ -227,53 +233,6 @@ class OntologyRetriever:
         qres = g.query(sparql_query)
         return qres.graph
 
-    def verbalize_aspect_category_sentiments_restaurant_type_2(self, aspect_category: str) -> Graph:
-        """
-        Given an aspect category (e.g. AMBIENCE#GENERAL), find the mention class that has
-        the exact aspect annotation, then select classes that are descendants of that mention
-        and also descendants of Positive/Negative/Neutral.
-        """
-        g: Graph = self.data_set_ontology.get_rdflib_graph()
-        base_ns = "http://www.kimschouten.com/sentiment/restaurant#"
-        aspect_uri = f"{base_ns}aspect"
-        entity_mention_uri = f"{base_ns}EntityMention"
-        positive_uri = f"{base_ns}Positive"
-        negative_uri = f"{base_ns}Negative"
-        neutral_uri = f"{base_ns}Neutral"
-
-        sparql_query = f"""
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-        PREFIX owl: <http://www.w3.org/2002/07/owl#>
-
-        CONSTRUCT {{
-          ?cls ?p ?o .
-        }}
-        WHERE {{
-          {{
-            ?mention a owl:Class ;
-                     <{aspect_uri}> "{aspect_category}" .
-            # Keep classes that are descendants of the mention...
-            ?cls rdfs:subClassOf+ ?mention .
-            # ...and also descendants of Positive OR Negative OR Neutral.
-            ?cls rdfs:subClassOf+ ?polarityRoot .
-            VALUES ?polarityRoot {{
-              <{positive_uri}>
-              <{negative_uri}>
-              <{neutral_uri}>
-            }}
-          }}
-          UNION
-          {{
-            ?cls a owl:Class ;
-                 <{aspect_uri}> "{aspect_category}" .
-          }}
-          ?cls ?p ?o .
-        }}
-        """
-
-        qres = g.query(sparql_query)
-        return qres.graph
-
     def verbalize(self, aspect_category: str) -> Graph:
         """
         Verbalize the sentiments of the aspect category.
@@ -319,8 +278,8 @@ if __name__ == "__main__":
         data_set_ontology = DataSetOntology(file_path)
         ontology_retriever = OntologyRetriever(data_set_ontology)
 
-        reachable_graph: Graph = ontology_retriever.verbalize_aspect_category_sentiments_restaurant_type_2('FOOD#QUALITY')
         reachable_graph: Graph = ontology_retriever.verbalize('FOOD#QUALITY')
+        reachable_graph: Graph = ontology_retriever.verbalize_aspect_category_sentiments_restaurant_type_2('FOOD#QUALITY')
         reachable_graph.serialize(destination="reachable_subgraph.owl", format="xml")
 
         print(ontology_retriever.relative_verbalized_graph_size("FOOD#QUALITY"))
