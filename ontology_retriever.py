@@ -108,16 +108,6 @@ class OntologyRetriever:
         qres = g.query(sparql_query)
         return qres.graph
 
-    @staticmethod
-    def _aspect_to_mention_local_name(aspect_category: str) -> str:
-        """
-        Convert aspect category to mention class local name.
-        Example: FOOD#STYLE_OPTIONS -> FoodMention
-        """
-
-        first_part = aspect_category.split("#", 1)[0].strip().capitalize()
-        return f'{first_part}Mention'
-
     def verbalize_aspect_category_sentiments_restaurant_type_2(self, aspect_category: str) -> Graph:
         """
         Given an aspect category (e.g. AMBIENCE#GENERAL), find the owl:Class with that aspect
@@ -172,18 +162,15 @@ class OntologyRetriever:
 
     def verbalize_aspect_category_sentiments_restaurant_type_3(self, aspect_category: str) -> Graph:
         """
-        Verbalize the type 3 sentiments of the restaurant ontology.
-        Fetches GenericNegativeAction / GenericNegativePropertyMention / GenericPositiveAction / GenericPositivePropertyMention,
-        all their descendants, and all superclasses of those classes.
-        Uses SPARQL 1.1 queries to fetch the data.
-
-        We use CONSTRUCT to fetch the Graph
-        This keeps the :lex as well
+        Anonymous intersections under Positive/Negative whose member list contains a class
+        annotated with this aspect (or any of its descendants), or a strict superclass of
+        an annotated class that remains a strict subclass of EntityMention. Emits the full
+        intersection list and triples for every member class.
         """
 
-        mention_local_name = self._aspect_to_mention_local_name(aspect_category)
         base_ns = "http://www.kimschouten.com/sentiment/restaurant#"
-        mention_uri = f"{base_ns}{mention_local_name}"
+        aspect_uri = f"{base_ns}aspect"
+        entity_mention_uri = f"{base_ns}EntityMention"
         positive_uri = f"{base_ns}Positive"
         negative_uri = f"{base_ns}Negative"
 
@@ -206,7 +193,6 @@ class OntologyRetriever:
           ?listNode rdf:rest ?next .
         }}
         WHERE {{
-          # Find anonymous intersection classes that are subclasses of Positive or Negative.
           ?anon owl:intersectionOf ?list ;
                 rdfs:subClassOf ?polarity .
           VALUES ?polarity {{
@@ -214,19 +200,31 @@ class OntologyRetriever:
             <{negative_uri}>
           }}
 
-          # Intersection contains mention class.
-          ?list rdf:rest*/rdf:first <{mention_uri}> .
+          # Some list member is in the focus set: an annotated class or any descendant
+          # thereof (under EntityMention), or a strict superclass of an annotated class
+          # that is still under EntityMention.
+          ?list rdf:rest*/rdf:first ?fSel .
+          {{
+            ?base a owl:Class ;
+                  <{aspect_uri}> "{aspect_category}" .
+            ?fSel rdfs:subClassOf* ?base .
+            ?fSel rdfs:subClassOf+ <{entity_mention_uri}> .
+          }}
+          UNION
+          {{
+            ?seed a owl:Class ;
+                  <{aspect_uri}> "{aspect_category}" .
+            ?seed rdfs:subClassOf+ ?fSel .
+            ?fSel rdfs:subClassOf+ <{entity_mention_uri}> .
+          }}
 
-          # Intersection also contains candidate class ?cls.
+          # Whole intersection: every list member and its triples.
           ?list rdf:rest*/rdf:first ?cls .
-          FILTER(?cls != <{mention_uri}>)
 
-          # Materialize complete intersection list in output.
           ?list rdf:rest* ?listNode .
           ?listNode rdf:first ?listItem ;
                     rdf:rest ?next .
 
-          # Keep outgoing triples of matching classes.
           ?cls ?p ?o .
         }}
         """
@@ -279,7 +277,7 @@ if __name__ == "__main__":
         ontology_retriever = OntologyRetriever(data_set_ontology)
 
         reachable_graph: Graph = ontology_retriever.verbalize('FOOD#QUALITY')
-        reachable_graph: Graph = ontology_retriever.verbalize_aspect_category_sentiments_restaurant_type_2('FOOD#QUALITY')
+        reachable_graph: Graph = ontology_retriever.verbalize_aspect_category_sentiments_restaurant_type_3('FOOD#QUALITY')
         reachable_graph.serialize(destination="reachable_subgraph.owl", format="xml")
 
         print(ontology_retriever.relative_verbalized_graph_size("FOOD#QUALITY"))
