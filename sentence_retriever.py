@@ -1,4 +1,5 @@
-from data_set import DataSet, Polarity
+from data_set import DataSet
+from enums import Polarity
 from rank_bm25 import BM25Okapi
 import numpy as np
 from typing import Callable
