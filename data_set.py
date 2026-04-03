@@ -1,12 +1,9 @@
 import xml.etree.ElementTree as ET
 import os
-from enum import StrEnum
 from dotenv import load_dotenv
 
-class Polarity(StrEnum):
-    POSITIVE = "positive"
-    NEGATIVE = "negative"
-    NEUTRAL = "neutral"
+from enums import Polarity
+
 
 class DataSet:
 
@@ -34,6 +31,15 @@ class DataSet:
             (
                 sentence.find('text').text, 
                 [(aspect.get('target'), Polarity(aspect.get('polarity'))) for aspect in sentence.find('Opinions').findall('Opinion')]
+            ) for sentence in self.root.findall('.//sentence')
+        ]
+
+    @property
+    def all_sentences_with_aspects_categories_and_polarities(self) -> list[tuple[str, list[tuple[str, str, Polarity]]]]:
+        return [
+            (
+                sentence.find('text').text, 
+                [(aspect.get('target'), aspect.get('category'), Polarity(aspect.get('polarity'))) for aspect in sentence.find('Opinions').findall('Opinion')]
             ) for sentence in self.root.findall('.//sentence')
         ]
 
