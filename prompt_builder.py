@@ -1,27 +1,17 @@
 import os
 from dotenv import load_dotenv
-from data_set import DataSet, Polarity
+from data_set import DataSet
 from data_set_ontology import DataSetOntology
 from ontology_retriever import OntologyRetriever
 from sentence_retriever import SentenceRetriever
-from enum import Enum
 from rdflib import Graph
 
-
-class OntologySelectionMethod(Enum):
-    Nothing = "Nothing"
-    Partial = "Partial"
-    Full = "Full"
-
-class OntologyFormat(Enum):
-    XML = "xml"
-    N3 = "n3"
-    NT = "nt"
-
-class DemonstrationSelectionMethod(Enum):
-    BM25 = "BM25"
-    SimCSE = "SimCSE"
-    Graph = "Graph"
+from enums import (
+    DemonstrationSelectionMethod,
+    OntologyFormat,
+    OntologySelectionMethod,
+    Polarity,
+)
 
 
 class PromptBuilder:

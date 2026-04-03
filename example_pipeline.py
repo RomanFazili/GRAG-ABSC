@@ -1,12 +1,16 @@
 from openrouter import OpenRouter
-import prompt_builder
 from data_set import DataSet
+from enums import (
+    DemonstrationSelectionMethod,
+    OntologyFormat,
+    OntologySelectionMethod,
+    Polarity,
+)
 from prompt_builder import PromptBuilder
 from sentence_retriever import SentenceRetriever
 from dotenv import load_dotenv
 import os
 from ontology_retriever import OntologyRetriever
-from data_set import Polarity
 from rdflib import Graph
 from data_set_ontology import DataSetOntology
 from openai import OpenAI
@@ -118,12 +122,12 @@ if __name__ == "__main__":
 
     predictions: list[dict] = []
 
-    demonstration_selection_method = prompt_builder.DemonstrationSelectionMethod.BM25
+    demonstration_selection_method = DemonstrationSelectionMethod.BM25
     top_k = 3
     train_data_filepath = os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TRAIN_DATA")
-    ontology_selection_method = prompt_builder.OntologySelectionMethod.Nothing
+    ontology_selection_method = OntologySelectionMethod.Nothing
     ontology_filepath = os.getenv("PATH_TO_RESTAURANT_ONTOLOGY")
-    ontology_format = prompt_builder.OntologyFormat.XML
+    ontology_format = OntologyFormat.XML
 
     i=0
     for sentence_text, aspects_with_true_polarities in data_set.all_sentences_with_aspects_and_polarities:
