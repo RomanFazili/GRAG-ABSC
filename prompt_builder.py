@@ -31,6 +31,7 @@ class PromptBuilder:
     The input variables to the prompt builder are:
     - input_sentence
     - aspect: the aspect of the input sentence
+    - aspect_category: the category of the aspect
     - demonstration_sentences:
         - demonstration_selection_method
         - top_k
@@ -45,6 +46,7 @@ class PromptBuilder:
     def build_prompt(
         input_sentence: str,
         aspect: str, 
+        aspect_category: str,
         demonstration_selection_method: DemonstrationSelectionMethod, 
         top_k: int, 
         train_data_filepath: str, 
@@ -71,7 +73,8 @@ class PromptBuilder:
         formatted_ontology = PromptBuilder._format_ontology(
             ontology_retriever,
             ontology_selection_method, 
-            ontology_format
+            ontology_format,
+            aspect_category
         )
 
         prompt = PromptBuilder._build_prompt(
@@ -122,14 +125,14 @@ class PromptBuilder:
         ontology_retriever: OntologyRetriever,
         ontology_selection_method: OntologySelectionMethod,
         ontology_format: OntologyFormat,
+        aspect_category: str,
     ) -> str | None:
 
         selected_ontology: Graph | None = None
         if ontology_selection_method == OntologySelectionMethod.Nothing:
             selected_ontology = None
         elif ontology_selection_method == OntologySelectionMethod.Partial:
-            raise NotImplementedError("Partial ontology selection method is not implemented yet")
-            selected_ontology = ontology_retriever.verbalize_aspect_category_sentiments_restaurant_type_1()
+            selected_ontology = ontology_retriever.verbalize(aspect_category=aspect_category)
         elif ontology_selection_method == OntologySelectionMethod.Full:
             selected_ontology = ontology_retriever.data_set_ontology.get_rdflib_graph()
 
