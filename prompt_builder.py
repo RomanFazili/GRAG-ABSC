@@ -182,6 +182,7 @@ if __name__ == "__main__":
     prompt = PromptBuilder.build_prompt(
         input_sentence="The restaurant had a nice atmosphere and the food was adequate as well.",
         aspect="food",
+        aspect_category="FOOD#QUALITY",
         demonstration_selection_method=DemonstrationSelectionMethod.SimCSE,
         top_k=3,
         train_data_filepath=os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TRAIN_DATA"),
