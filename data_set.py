@@ -29,7 +29,7 @@ class DataSet:
     def all_sentences_with_aspects_and_polarities(self) -> list[tuple[str, list[tuple[str, Polarity]]]]:
         return [
             (
-                sentence.find('text').text, 
+                sentence.find('text').text,
                 [(aspect.get('target'), Polarity(aspect.get('polarity'))) for aspect in sentence.find('Opinions').findall('Opinion')]
             ) for sentence in self.root.findall('.//sentence')
         ]
@@ -64,7 +64,7 @@ class DataSet:
 
 if __name__ == "__main__":
     load_dotenv()
-    file_path = os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_14_RESTAURANTS_TRAIN_DATA")
+    file_path = os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TEST_DATA")
 
     data_set = DataSet(file_path)
     print(data_set.polarity_frequencies())
