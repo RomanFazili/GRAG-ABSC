@@ -25,6 +25,7 @@ class Job:
     ontology_retriever: OntologyRetriever
     ontology_selection_method: OntologySelectionMethod
     ontology_format: OntologyFormat
+    model: str
     prompt: str | None
     llm_output: str | None
 
@@ -40,6 +41,7 @@ class Job:
             "ontology_retriever_path": self.ontology_retriever.data_set_ontology.file_path,
             "ontology_selection_method": self.ontology_selection_method.value,
             "ontology_format": self.ontology_format.value,
+            "model": self.model,
             "prompt": self.prompt,
             "llm_output": self.llm_output,
         }
@@ -66,6 +68,7 @@ demonstration_selection_method = DemonstrationSelectionMethod.SimCSE
 ontology_selection_method = OntologySelectionMethod.Nothing
 ontology_format = OntologyFormat.XML
 top_k = 3
+model = "meta-llama/Llama-3.2-3B-Instruct"
 
 for sentence, aspects_categories_and_polarities in test_data_set.all_sentences_with_aspects_categories_and_polarities:
     for aspect, aspect_category, true_polarity in aspects_categories_and_polarities:
@@ -91,6 +94,7 @@ for sentence, aspects_categories_and_polarities in test_data_set.all_sentences_w
             ontology_retriever=ontology_retriever,
             ontology_selection_method=ontology_selection_method,
             ontology_format=ontology_format,
+            model=model,
             prompt=prompt,
             llm_output=None,
         ))
@@ -100,7 +104,7 @@ jobs.sort(key=lambda x: x.prompt) # make use of kv caching
 async def run(job: Job):
 
     response = await client.chat.completions.create(
-        model="meta-llama/Llama-3.2-3B-Instruct",
+        model=job.model,
         messages=[{"role":"user","content":job.prompt}],
         max_tokens=1
     )
