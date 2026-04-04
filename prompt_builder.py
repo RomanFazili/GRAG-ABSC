@@ -67,6 +67,7 @@ class PromptBuilder:
         prompt = PromptBuilder._build_prompt(
             input_sentence=input_sentence,
             aspect=aspect,
+            aspect_category=aspect_category,
             formatted_demonstrations=formatted_demonstrations,
             formatted_ontology=formatted_ontology,
         )
