@@ -1,4 +1,5 @@
 from openrouter import OpenRouter
+import prompt_builder
 from data_set import DataSet
 from enums import (
     DemonstrationSelectionMethod,
