@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import os
 import re
 from typing import Callable
@@ -17,17 +15,12 @@ Tokenizer = Callable[[str], list[str]]
 _SIMCSE_MODEL_NAME = "princeton-nlp/unsup-simcse-bert-base-uncased"
 
 
-def default_tokenizer(text: str) -> list[str]:
-    """Tokenize for BM25: lowercase alnum tokens including simple apostrophe forms."""
-    return re.findall(r"[a-z0-9]+(?:'[a-z0-9]+)?", text.lower())
-
 
 class SentenceRetriever:
     """Retrieves demonstration sentences; BM25 / SimCSE indices are built lazily once each."""
 
-    def __init__(self, data_set: DataSet, tokenizer: Tokenizer | None = None):
+    def __init__(self, data_set: DataSet):
         self.data_set = data_set
-        self._tokenizer: Tokenizer = tokenizer or default_tokenizer
 
         self._corpus_rows: list[tuple[str, list[tuple[str, Polarity]]]] | None = None
         self._bm25_tokenized: list[list[str]] | None = None
@@ -35,19 +28,17 @@ class SentenceRetriever:
         self._simcse_model: SentenceTransformer | None = None
         self._simcse_embeddings: np.ndarray | None = None
 
-    def tokenize(self, text: str) -> list[str]:
-        return self._tokenizer(text)
-
     def _get_corpus_rows(self) -> list[tuple[str, list[tuple[str, Polarity]]]]:
         if self._corpus_rows is None:
             self._corpus_rows = list(self.data_set.all_sentences_with_aspects_and_polarities)
         return self._corpus_rows
 
+
     def _ensure_bm25_index(self) -> None:
         if self._bm25_index is not None:
             return
         corpus = self._get_corpus_rows()
-        self._bm25_tokenized = [self.tokenize(sentence) for sentence, _ in corpus]
+        self._bm25_tokenized = [self.tokenize_bm25(sentence) for sentence, _ in corpus]
         self._bm25_index = BM25Okapi(corpus=self._bm25_tokenized)
 
     def _ensure_simcse_embeddings(self) -> None:
@@ -63,6 +54,10 @@ class SentenceRetriever:
             convert_to_numpy=True,
         )
 
+    def tokenize_bm25(self, text: str) -> list[str]:
+        """Tokenize for BM25: lowercase alnum tokens including simple apostrophe forms."""
+        return re.findall(r"[a-z0-9]+(?:'[a-z0-9]+)?", text.lower())
+
     def BM25_demonstration_selection(
         self, query_sentence: str, top_k: int
     ) -> list[tuple[str, list[tuple[str, Polarity]]]]:
@@ -71,7 +66,7 @@ class SentenceRetriever:
         corpus = self._get_corpus_rows()
         assert self._bm25_index is not None
 
-        tokenized_query = self.tokenize(query_sentence)
+        tokenized_query = self.tokenize_bm25(query_sentence)
         scores: np.ndarray = self._bm25_index.get_scores(tokenized_query)
         top_indices = scores.argsort()[-top_k:][::-1]
         return [corpus[int(i)] for i in top_indices]
