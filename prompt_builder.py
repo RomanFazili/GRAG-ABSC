@@ -101,12 +101,19 @@ class PromptBuilder:
         if not demonstration_sentences:
             return None
 
-        return "\n".join(
+        return "\n\n".join(
             [
-                f"Sentence: {sentence}\nAspects and Polarities: {[(aspect, str(polarity)) for aspect, polarity in aspects_and_polarities]}"
+                f"Sentence: {sentence}\nTarget Aspect: {aspect}\nPolarity: {polarity.value}"
                 for sentence, aspects_and_polarities in demonstration_sentences
+                for aspect, polarity in aspects_and_polarities
             ]
         )
+        # return "\n".join(
+        #     [
+        #         f"Sentence: {sentence}\nAspects and Polarities: {[(aspect, str(polarity)) for aspect, polarity in aspects_and_polarities]}"
+        #         for sentence, aspects_and_polarities in demonstration_sentences
+        #     ]
+        # )
 
     @staticmethod
     def _format_ontology(
@@ -144,10 +151,16 @@ class PromptBuilder:
     ) -> str:
 
         prompt = (
-            f"You must return the sentiment polarity of the following sentence:\n"
-            f"{input_sentence}\n"
-            f"With the given aspect of {aspect} and aspect category of {aspect_category}\n"
+            "Your task is to classify the sentiment of a target aspect within a sentence.\n"
+            "You must respond with only one of the following words: positive, negative, or neutral.\n"
         )
+
+        if formatted_ontology:
+            prompt += (
+                "\n"
+                f"You may use this ontology to help you:\n"
+                f"{formatted_ontology}\n"
+            )
 
         if formatted_demonstrations:
             prompt += (
@@ -156,12 +169,12 @@ class PromptBuilder:
                 f"{formatted_demonstrations}\n"
             )
 
-        if formatted_ontology:
-            prompt += (
-                "\n"
-                f"You may use this ontology to help you:\n"
-                f"{formatted_ontology}\n"
-            )
+        prompt += (
+            "\n"
+            f"Sentence: {input_sentence}\n"
+            f"Target Aspect: {aspect}\n"
+            f"Sentiment:"
+        )
 
         return prompt
 
@@ -213,6 +226,21 @@ class PromptBuilder:
 
 if __name__ == "__main__":
     load_dotenv()
+    train_path = os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TEST_DATA")
+    ontology_path = os.getenv("PATH_TO_RESTAURANT_ONTOLOGY")
+
+    print(PromptBuilder.build_prompt(
+        input_sentence="The food was good",
+        aspect="food",
+        aspect_category="FOOD#QUALITY",
+        demonstration_selection_method=DemonstrationSelectionMethod.BM25,
+        top_k=3,
+        sentence_retriever=SentenceRetriever(DataSet(train_path)),
+        ontology_retriever=OntologyRetriever(DataSetOntology(ontology_path)),
+        ontology_selection_method=OntologySelectionMethod.Partial,
+        ontology_format=OntologyFormat.XML,
+    ))
+    exit()
 
     test_path = os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TEST_DATA")
     ontology_path = os.getenv("PATH_TO_RESTAURANT_ONTOLOGY")
