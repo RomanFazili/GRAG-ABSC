@@ -167,6 +167,11 @@ class PromptBuilder:
 
     @staticmethod
     def get_median_prompt_length_tokens(test_path: str, ontology_path: str, model: LLMModel) -> float:
+        """
+        Get the median prompt length in tokens for all combinations of settings.
+
+        Restaurant 2015 test data on Gemma 2b IT tokenizer: 14254 tokens
+        """
         import statistics
 
         from transformers import AutoTokenizer
