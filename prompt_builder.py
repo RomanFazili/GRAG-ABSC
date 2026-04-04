@@ -25,23 +25,23 @@ class PromptBuilder:
     - demonstration_sentences:
         - demonstration_selection_method
         - top_k
-        - train data filepath
+        - sentence_retriever: built from the training ``DataSet`` (create once per run)
     - ontology_injection:
         - ontology_selection_method [nothing, partial (type 1&2&3 combined), full]
-        - ontology filepath
+        - ontology_retriever: wrap a single loaded ``DataSetOntology`` (create once per run)
     - prompt format
     """
 
     @staticmethod
     def build_prompt(
         input_sentence: str,
-        aspect: str, 
+        aspect: str,
         aspect_category: str,
-        demonstration_selection_method: DemonstrationSelectionMethod, 
-        top_k: int, 
-        train_data_filepath: str, 
-        ontology_selection_method: OntologySelectionMethod, 
-        ontology_filepath: str, 
+        demonstration_selection_method: DemonstrationSelectionMethod,
+        top_k: int,
+        sentence_retriever: SentenceRetriever,
+        ontology_retriever: OntologyRetriever,
+        ontology_selection_method: OntologySelectionMethod,
         ontology_format: OntologyFormat,
     ) -> str:
 
@@ -49,16 +49,12 @@ class PromptBuilder:
         assert isinstance(ontology_selection_method, OntologySelectionMethod)
         assert isinstance(ontology_format, OntologyFormat)
 
-        sentence_retriever = SentenceRetriever(DataSet(train_data_filepath))
-
         formatted_demonstrations = PromptBuilder._format_demonstrations(
-            demonstration_selection_method, 
-            top_k, 
-            sentence_retriever, 
-            input_sentence
+            demonstration_selection_method,
+            top_k,
+            sentence_retriever,
+            input_sentence,
         )
-
-        ontology_retriever = OntologyRetriever(DataSetOntology(ontology_filepath))
 
         formatted_ontology = PromptBuilder._format_ontology(
             ontology_retriever,
@@ -169,20 +165,31 @@ class PromptBuilder:
 if __name__ == "__main__":
     load_dotenv()
 
+    # sizes partial ont.:
+    # - xml: 142943
+    # - NT: 196805
+    # - n3: 48160
+
+    train_path = os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TRAIN_DATA")
+    ontology_path = os.getenv("PATH_TO_RESTAURANT_ONTOLOGY")
+    assert train_path and ontology_path
+
+    train_sentence_retriever = SentenceRetriever(DataSet(train_path))
+    ontology_retriever = OntologyRetriever(DataSetOntology(ontology_path))
+
     prompt = PromptBuilder.build_prompt(
         input_sentence="The restaurant had a nice atmosphere and the food was adequate as well.",
         aspect="food",
         aspect_category="FOOD#QUALITY",
         demonstration_selection_method=DemonstrationSelectionMethod.SimCSE,
         top_k=3,
-        train_data_filepath=os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TRAIN_DATA"),
-        ontology_selection_method=OntologySelectionMethod.Full,
-        ontology_filepath=os.getenv("PATH_TO_RESTAURANT_ONTOLOGY"),
-        ontology_format=OntologyFormat.XML,
+        sentence_retriever=train_sentence_retriever,
+        ontology_retriever=ontology_retriever,
+        ontology_selection_method=OntologySelectionMethod.Partial,
+        ontology_format=OntologyFormat.N3,
     )
 
-    print(prompt)
-    exit()
+    print(f"Prompt length: {len(prompt)} characters")
     # for domain in ["laptop", "restaurant"]:
     #     for yeah in [2015, 2016]:
     #         for input_sentence, aspect in training_sentences:
