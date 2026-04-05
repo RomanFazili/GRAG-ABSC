@@ -8,6 +8,8 @@ class OntologyRetriever:
     def __init__(self, data_set_ontology: DataSetOntology):
         self.data_set_ontology: DataSetOntology = data_set_ontology
 
+        self._saved_graphs: dict[str, Graph] = {}
+
     def verbalize_type1_sentiments_laptop(self):
         """
         Verbalize the type 1 sentiments of the laptop ontology.
@@ -236,11 +238,19 @@ class OntologyRetriever:
         Verbalize the sentiments of the aspect category.
         """
 
+        if aspect_category in self._saved_graphs:
+            graph: Graph = self._saved_graphs[aspect_category]
+            return graph
+
         type_1_graph: Graph = self.verbalize_aspect_category_sentiments_restaurant_type_1()
         type_2_graph: Graph = self.verbalize_aspect_category_sentiments_restaurant_type_2(aspect_category)
         type_3_graph: Graph = self.verbalize_aspect_category_sentiments_restaurant_type_3(aspect_category)
 
-        return type_1_graph + type_2_graph + type_3_graph
+        graph: Graph = type_1_graph + type_2_graph + type_3_graph
+
+        self._saved_graphs[aspect_category] = graph
+
+        return graph
 
     def relative_verbalized_graph_size(self, aspect_category: str) -> float:
         """

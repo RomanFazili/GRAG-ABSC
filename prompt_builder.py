@@ -9,6 +9,7 @@ from rdflib import Graph
 from enums import (
     DemonstrationSelectionMethod,
     OntologyFormat,
+    LLMModel,
     OntologySelectionMethod,
     Polarity,
 )
@@ -25,23 +26,23 @@ class PromptBuilder:
     - demonstration_sentences:
         - demonstration_selection_method
         - top_k
-        - train data filepath
+        - sentence_retriever: built from the training ``DataSet`` (create once per run)
     - ontology_injection:
         - ontology_selection_method [nothing, partial (type 1&2&3 combined), full]
-        - ontology filepath
+        - ontology_retriever: wrap a single loaded ``DataSetOntology`` (create once per run)
     - prompt format
     """
 
     @staticmethod
     def build_prompt(
         input_sentence: str,
-        aspect: str, 
+        aspect: str,
         aspect_category: str,
-        demonstration_selection_method: DemonstrationSelectionMethod, 
-        top_k: int, 
-        train_data_filepath: str, 
-        ontology_selection_method: OntologySelectionMethod, 
-        ontology_filepath: str, 
+        demonstration_selection_method: DemonstrationSelectionMethod,
+        top_k: int,
+        sentence_retriever: SentenceRetriever,
+        ontology_retriever: OntologyRetriever,
+        ontology_selection_method: OntologySelectionMethod,
         ontology_format: OntologyFormat,
     ) -> str:
 
@@ -49,16 +50,12 @@ class PromptBuilder:
         assert isinstance(ontology_selection_method, OntologySelectionMethod)
         assert isinstance(ontology_format, OntologyFormat)
 
-        sentence_retriever = SentenceRetriever(DataSet(train_data_filepath))
-
         formatted_demonstrations = PromptBuilder._format_demonstrations(
-            demonstration_selection_method, 
-            top_k, 
-            sentence_retriever, 
-            input_sentence
+            demonstration_selection_method,
+            top_k,
+            sentence_retriever,
+            input_sentence,
         )
-
-        ontology_retriever = OntologyRetriever(DataSetOntology(ontology_filepath))
 
         formatted_ontology = PromptBuilder._format_ontology(
             ontology_retriever,
@@ -70,6 +67,7 @@ class PromptBuilder:
         prompt = PromptBuilder._build_prompt(
             input_sentence=input_sentence,
             aspect=aspect,
+            aspect_category=aspect_category,
             formatted_demonstrations=formatted_demonstrations,
             formatted_ontology=formatted_ontology,
         )
@@ -103,12 +101,19 @@ class PromptBuilder:
         if not demonstration_sentences:
             return None
 
-        return "\n".join(
+        return "\n\n".join(
             [
-                f"Sentence: {sentence}\nAspects and Polarities: {[(aspect, str(polarity)) for aspect, polarity in aspects_and_polarities]}"
+                f"Sentence: {sentence}\nTarget Aspect: {aspect}\nPolarity: {polarity.value}"
                 for sentence, aspects_and_polarities in demonstration_sentences
+                for aspect, polarity in aspects_and_polarities
             ]
         )
+        # return "\n".join(
+        #     [
+        #         f"Sentence: {sentence}\nAspects and Polarities: {[(aspect, str(polarity)) for aspect, polarity in aspects_and_polarities]}"
+        #         for sentence, aspects_and_polarities in demonstration_sentences
+        #     ]
+        # )
 
     @staticmethod
     def _format_ontology(
@@ -140,22 +145,15 @@ class PromptBuilder:
     def _build_prompt(
         input_sentence: str,
         aspect: str,
+        aspect_category: str,
         formatted_demonstrations: str | None,
         formatted_ontology: str | None
     ) -> str:
 
         prompt = (
-            f"You must return the sentiment polarity of the following sentence:\n"
-            f"{input_sentence}\n"
-            f"With the given aspect of {aspect}\n"
+            "Your task is to classify the sentiment of a target aspect within a sentence.\n"
+            "You must respond with only one of the following words: positive, negative, or neutral.\n"
         )
-
-        if formatted_demonstrations:
-            prompt += (
-                "\n"
-                f"You may use these demonstration sentences with the given aspects and polarities to help you:\n"
-                f"{formatted_demonstrations}\n"
-            )
 
         if formatted_ontology:
             prompt += (
@@ -164,30 +162,91 @@ class PromptBuilder:
                 f"{formatted_ontology}\n"
             )
 
+        if formatted_demonstrations:
+            prompt += (
+                "\n"
+                f"You may use these demonstration sentences with the given aspects and polarities to help you:\n"
+                f"{formatted_demonstrations}\n"
+            )
+
+        prompt += (
+            "\n"
+            f"Sentence: {input_sentence}\n"
+            f"Target Aspect: {aspect}\n"
+            f"Sentiment:"
+        )
+
         return prompt
+
+    @staticmethod
+    def get_median_prompt_length_tokens(test_path: str, ontology_path: str, model: LLMModel) -> float:
+        """
+        Get the median prompt length in tokens for all combinations of settings.
+
+        Restaurant 2015 test data on Gemma 2b IT tokenizer: 14254 tokens
+        """
+        import statistics
+
+        from transformers import AutoTokenizer
+
+        assert test_path and ontology_path
+
+        load_dotenv()
+        hf_tok = os.getenv("HF_TOKEN")
+        tokenizer = AutoTokenizer.from_pretrained(model.value, token=hf_tok)
+
+        sentence_retriever = SentenceRetriever(DataSet(test_path))
+        ontology_retriever = OntologyRetriever(DataSetOntology(ontology_path))
+
+        token_counts: list[int] = []
+        for demonstration_selection_method in DemonstrationSelectionMethod:
+            if demonstration_selection_method == DemonstrationSelectionMethod.Graph:
+                continue
+
+            for selection_method in OntologySelectionMethod:
+                for ontology_format in OntologyFormat:
+                    for top_k in [0, 3]:
+                        for sentence, aspects_categories_and_polarities in sentence_retriever.data_set.all_sentences_with_aspects_categories_and_polarities:
+                            for aspect, aspect_category, _ in aspects_categories_and_polarities:
+                    
+                                prompt = PromptBuilder.build_prompt(
+                                    input_sentence=sentence,
+                                    aspect=aspect,
+                                    aspect_category=aspect_category,
+                                    demonstration_selection_method=demonstration_selection_method,
+                                    top_k=top_k,
+                                    sentence_retriever=sentence_retriever,
+                                    ontology_retriever=ontology_retriever,
+                                    ontology_selection_method=selection_method,
+                                    ontology_format=ontology_format,
+                                )
+
+                                token_counts.append(len(tokenizer.encode(prompt, add_special_tokens=False)))
+        return statistics.median(token_counts)
 
 if __name__ == "__main__":
     load_dotenv()
+    train_path = os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TEST_DATA")
+    ontology_path = os.getenv("PATH_TO_RESTAURANT_ONTOLOGY")
 
-    prompt = PromptBuilder.build_prompt(
-        input_sentence="The restaurant had a nice atmosphere and the food was adequate as well.",
+    print(PromptBuilder.build_prompt(
+        input_sentence="The food was good",
         aspect="food",
         aspect_category="FOOD#QUALITY",
-        demonstration_selection_method=DemonstrationSelectionMethod.SimCSE,
+        demonstration_selection_method=DemonstrationSelectionMethod.BM25,
         top_k=3,
-        train_data_filepath=os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TRAIN_DATA"),
-        ontology_selection_method=OntologySelectionMethod.Full,
-        ontology_filepath=os.getenv("PATH_TO_RESTAURANT_ONTOLOGY"),
+        sentence_retriever=SentenceRetriever(DataSet(train_path)),
+        ontology_retriever=OntologyRetriever(DataSetOntology(ontology_path)),
+        ontology_selection_method=OntologySelectionMethod.Partial,
         ontology_format=OntologyFormat.XML,
-    )
-
-    print(prompt)
+    ))
     exit()
-    # for domain in ["laptop", "restaurant"]:
-    #     for yeah in [2015, 2016]:
-    #         for input_sentence, aspect in training_sentences:
-    #             for demonstration_selection_method in DemonstrationSelectionMethod:
-    #                 for top_k in [0, 3]:
-    #                     for ontology_selection_method in OntologySelectionMethod:
-    #                         for ontology_format in OntologyFormat:
-#                                 for ai_model in [...]
+
+    test_path = os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TEST_DATA")
+    ontology_path = os.getenv("PATH_TO_RESTAURANT_ONTOLOGY")
+    model = LLMModel.GEMMA_2_2B_IT
+
+    median_tokens = PromptBuilder.get_median_prompt_length_tokens(test_path, ontology_path, model)
+    print(
+        f"Median prompt length: {median_tokens:.1f} tokens "
+    )

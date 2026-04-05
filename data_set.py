@@ -61,6 +61,9 @@ class DataSet:
             'total': total
         }
 
+    def find_unique_aspect_categories(self) -> set[str]:
+        return {aspect.get('category') for aspect in self.root.findall('.//Opinion')}
+
 
 if __name__ == "__main__":
     load_dotenv()
@@ -68,3 +71,4 @@ if __name__ == "__main__":
 
     data_set = DataSet(file_path)
     print(data_set.polarity_frequencies())
+    print(data_set.find_unique_aspect_categories())
