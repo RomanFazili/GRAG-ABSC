@@ -173,7 +173,8 @@ class PromptBuilder:
             "\n"
             f"Sentence: {input_sentence}\n"
             f"Target Aspect: {aspect}\n"
-            f"Sentiment:"
+            f"Target Aspect Category: {aspect_category}\n"
+            f"You must respond with the polarity of the target aspect only one of the following words: positive, negative, or neutral.\n"
         )
 
         return prompt
