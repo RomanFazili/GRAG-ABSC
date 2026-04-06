@@ -62,6 +62,10 @@ class SentenceRetriever:
         self, query_sentence: str, top_k: int
     ) -> list[tuple[str, list[tuple[str, Polarity]]]]:
         """BM25 over the training corpus; index built on first call only."""
+
+        if top_k == 0:
+            return []
+
         self._ensure_bm25_index()
         corpus = self._get_corpus_rows()
         assert self._bm25_index is not None
@@ -75,6 +79,10 @@ class SentenceRetriever:
         self, query_sentence: str, top_k: int
     ) -> list[tuple[str, list[tuple[str, Polarity]]]]:
         """SentenceTransformer similarity; model + corpus embeddings built on first call only."""
+
+        if top_k == 0:
+            return []
+
         self._ensure_simcse_embeddings()
         corpus = self._get_corpus_rows()
         assert self._simcse_model is not None
