@@ -151,6 +151,7 @@ class PromptBuilder:
     ) -> str:
 
         prompt = (
+            "Instruction:\n"
             "Your task is to classify the sentiment of a target aspect within a sentence.\n"
             "You must respond with only one of the following words: positive, negative, or neutral.\n"
         )
@@ -171,10 +172,10 @@ class PromptBuilder:
 
         prompt += (
             "\n"
+            f"Now, classify the sentiment of the target aspect in the following sentence respond with one of the following words: positive, negative, or neutral:\n"
             f"Sentence: {input_sentence}\n"
             f"Target Aspect: {aspect}\n"
             f"Target Aspect Category: {aspect_category}\n"
-            f"You must respond with the polarity of the target aspect only one of the following words: positive, negative, or neutral.\n"
         )
 
         return prompt
