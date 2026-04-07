@@ -1184,13 +1184,6 @@
                     <Opinion target="mushroom sauce" category="FOOD#QUALITY" polarity="negative" from="71" to="85" />
                 </Opinions>
             </sentence>
-            <sentence id="NP#4:4">
-                <text>I showed it to the manager, and he smilingly apologized and brought us two free desserts (but did not ask us what we wanted and so brought the last two desserts we would have asked for).</text>
-                <Opinions>
-                    <Opinion target="manager" category="SERVICE#GENERAL" polarity="positive" from="19" to="26" />
-                    <Opinion target="manager" category="SERVICE#GENERAL" polarity="negative" from="19" to="26" />
-                </Opinions>
-            </sentence>
             <sentence id="NP#4:7">
                 <text>The manager finally said he would comp the two glasses of wine (which cost less than the food), and made it seem like a big concession.</text>
                 <Opinions>
@@ -2884,8 +2877,6 @@
             <sentence id="WE#1:4">
                 <text>The pasta was well cooked, didn't have enough sauce though or flavor.</text>
                 <Opinions>
-                    <Opinion target="pasta" category="FOOD#QUALITY" polarity="positive" from="4" to="9" />
-                    <Opinion target="pasta" category="FOOD#QUALITY" polarity="negative" from="4" to="9" />
                     <Opinion target="pasta" category="FOOD#STYLE_OPTIONS" polarity="negative" from="4" to="9" />
                 </Opinions>
             </sentence>

@@ -720,13 +720,6 @@
     </Review>
     <Review rid="en_India'sGrill_477960698">
         <sentences>
-            <sentence id="en_India'sGrill_477960698:0">
-                <text>Nice food but no spice!</text>
-                <Opinions>
-                    <Opinion target="food" category="FOOD#QUALITY" polarity="positive" from="5" to="9" />
-                    <Opinion target="food" category="FOOD#QUALITY" polarity="negative" from="5" to="9" />
-                </Opinions>
-            </sentence>
             <sentence id="en_India'sGrill_477960698:1">
                 <text>– I really enjoyed my meal here.</text>
                 <Opinions>
@@ -740,13 +733,6 @@
                     <Opinion target="saag paneer" category="FOOD#QUALITY" polarity="positive" from="24" to="35" />
                     <Opinion target="samosas" category="FOOD#QUALITY" polarity="positive" from="37" to="44" />
                     <Opinion target="naan" category="FOOD#QUALITY" polarity="positive" from="46" to="50" />
-                </Opinions>
-            </sentence>
-            <sentence id="en_India'sGrill_477960698:3">
-                <text>The food was all good but it was way too mild.</text>
-                <Opinions>
-                    <Opinion target="food" category="FOOD#QUALITY" polarity="positive" from="4" to="8" />
-                    <Opinion target="food" category="FOOD#QUALITY" polarity="negative" from="4" to="8" />
                 </Opinions>
             </sentence>
             <sentence id="en_India'sGrill_477960698:5">
@@ -2967,9 +2953,7 @@
             <sentence id="en_SnoozeanAMEatery_480171723:7">
                 <text>The pancakes were certainly inventive but $8.50 for 3 - 6" pancakes (one of them was more like 5") in the pancake flight (sample of 3 different pancakes) is well over-priced.</text>
                 <Opinions>
-                    <Opinion target="pancakes" category="FOOD#STYLE_OPTIONS" polarity="positive" from="4" to="12" />
                     <Opinion target="pancakes" category="FOOD#PRICES" polarity="negative" from="4" to="12" />
-                    <Opinion target="pancakes" category="FOOD#STYLE_OPTIONS" polarity="negative" from="4" to="12" />
                 </Opinions>
             </sentence>
             <sentence id="en_SnoozeanAMEatery_480171723:8">
