@@ -22,6 +22,7 @@ class OntologyFormat(StrEnum):
     XML = "xml"
     N3 = "n3"
     NT = "nt"
+    TURTLE = "turtle"
 
 
 class DemonstrationSelectionMethod(StrEnum):

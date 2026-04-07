@@ -138,6 +138,8 @@ class PromptBuilder:
                 return selected_ontology.serialize(format="n3")
             elif ontology_format == OntologyFormat.NT:
                 return selected_ontology.serialize(format="nt")
+            elif ontology_format == OntologyFormat.TURTLE:
+                return selected_ontology.serialize(format="turtle")
 
         return None
 

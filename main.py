@@ -10,6 +10,7 @@ from ontology_retriever import OntologyRetriever
 import os
 from dotenv import load_dotenv
 import json
+from sklearn.metrics import f1_score, classification_report
 
 load_dotenv()
 
@@ -29,6 +30,10 @@ class Job:
     prompt: str | None
     llm_output: str | None
 
+    @property
+    def is_correct(self) -> bool:
+        return self.true_polarity.value.lower() == self.llm_output.lower()
+
     def as_dict(self) -> dict:
         return {
             "input_sentence": self.input_sentence,
@@ -45,6 +50,20 @@ class Job:
             "prompt": self.prompt,
             "llm_output": self.llm_output,
         }
+
+def calculate_evaluation_metrics(finished_jobs: list[Job]) -> dict:
+    """Calculates weighted and macro F1 scores from predictions"""
+    if not finished_jobs:
+        raise ValueError("No finished jobs to calculate evaluation metrics")
+    
+    y_true_labels: list[str] = [job.true_polarity.value for job in finished_jobs]
+    y_pred_labels: list[str] = [job.llm_output for job in finished_jobs]
+    
+    return {
+        "classification_report": classification_report(y_true_labels, y_pred_labels, output_dict=True),
+        "total_predictions": len(finished_jobs),
+        "correct_predictions": sum(job.is_correct for job in finished_jobs)
+    }
 
 client = AsyncOpenAI(
     base_url=os.getenv("OPEN_AI_BASE_URL"),
@@ -65,41 +84,43 @@ train_data_set = DataSet(train_path)
 sentence_retriever = SentenceRetriever(train_data_set)
 ontology_retriever = OntologyRetriever(DataSetOntology(ontology_path))
 demonstration_selection_method = DemonstrationSelectionMethod.SimCSE
-ontology_selection_method = OntologySelectionMethod.Nothing
+ontology_selection_method = OntologySelectionMethod.Full
 ontology_format = OntologyFormat.XML
-top_k = 3
+top_k = 0
 model = "meta-llama/Llama-3.2-3B-Instruct"
 
-for sentence, aspects_categories_and_polarities in test_data_set.all_sentences_with_aspects_categories_and_polarities:
-    for aspect, aspect_category, true_polarity in aspects_categories_and_polarities:
-        prompt = PromptBuilder.build_prompt(
-            input_sentence=sentence,
-            aspect=aspect,
-            aspect_category=aspect_category,
-            demonstration_selection_method=demonstration_selection_method,
-            top_k=top_k,
-            sentence_retriever=sentence_retriever,
-            ontology_retriever=ontology_retriever,
-            ontology_selection_method=ontology_selection_method,
-            ontology_format=ontology_format,
-        )
-        jobs.append(Job(
-            input_sentence=sentence,
-            aspect=aspect,
-            aspect_category=aspect_category,
-            true_polarity=true_polarity,
-            demonstration_selection_method=demonstration_selection_method,
-            top_k=top_k,
-            sentence_retriever=sentence_retriever,
-            ontology_retriever=ontology_retriever,
-            ontology_selection_method=ontology_selection_method,
-            ontology_format=ontology_format,
-            model=model,
-            prompt=prompt,
-            llm_output=None,
-        ))
+if not jobs:
+    for sentence, aspects_categories_and_polarities in test_data_set.all_sentences_with_aspects_categories_and_polarities:
+        for aspect, aspect_category, true_polarity in aspects_categories_and_polarities:
+            prompt = PromptBuilder.build_prompt(
+                input_sentence=sentence,
+                aspect=aspect,
+                aspect_category=aspect_category,
+                demonstration_selection_method=demonstration_selection_method,
+                top_k=top_k,
+                sentence_retriever=sentence_retriever,
+                ontology_retriever=ontology_retriever,
+                ontology_selection_method=ontology_selection_method,
+                ontology_format=ontology_format,
+            )
+            jobs.append(Job(
+                input_sentence=sentence,
+                aspect=aspect,
+                aspect_category=aspect_category,
+                true_polarity=true_polarity,
+                demonstration_selection_method=demonstration_selection_method,
+                top_k=top_k,
+                sentence_retriever=sentence_retriever,
+                ontology_retriever=ontology_retriever,
+                ontology_selection_method=ontology_selection_method,
+                ontology_format=ontology_format,
+                model=model,
+                prompt=prompt,
+                llm_output=None,
+            ))
 
 jobs.sort(key=lambda x: x.prompt) # make use of kv caching
+print(len(jobs))
 
 async def run(job: Job):
 
@@ -120,12 +141,24 @@ async def main():
 
 results = asyncio.run(main())
 
-# Save the results to a JSONL file
-with open("results.jsonl", "w") as f:
-    for job in results:
-        f.write(json.dumps(job.as_dict()) + "\n")
+# # Save the results to a JSONL file
+# with open("results.jsonl", "w") as f:
+#     for job in results:
+#         f.write(json.dumps(job.as_dict()) + "\n")
 
+evaluation_metrics = calculate_evaluation_metrics(results)
 
-print({job.llm_output for job in jobs})
-print(sum(1 for job in jobs if job.llm_output.lower() == job.true_polarity.value.lower()))
-print(len(jobs))
+evaluation_metrics["test_path"] = test_path
+evaluation_metrics["train_path"] = train_path
+evaluation_metrics["ontology_path"] = ontology_path
+
+evaluation_metrics["model"] = model
+evaluation_metrics["demonstration_selection_method"] = demonstration_selection_method.value
+evaluation_metrics["ontology_selection_method"] = ontology_selection_method.value
+evaluation_metrics["ontology_format"] = ontology_format.value
+evaluation_metrics["top_k"] = top_k
+
+with open("results.jsonl", "a") as f:
+    f.write(json.dumps(evaluation_metrics) + "\n")
+
+print(evaluation_metrics)
