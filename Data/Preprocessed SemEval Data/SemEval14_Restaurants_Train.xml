@@ -592,7 +592,6 @@
                 <text>Lahore is a great place to duck into late-night when you need some really tasty food on the cheap -- you'll likely have trouble finishing the amount of food you get for FOUR DOLLARS.</text>
                 <Opinions>
                     <Opinion target="food" category="" polarity="positive" from_="80" to="84" />
-                    <Opinion target="food" category="" polarity="positive" from_="152" to="156" />
                 </Opinions>
             </sentence>
             <sentence id="1798">
@@ -683,7 +682,6 @@
                 <text>Yes, they use fancy ingredients, but even fancy ingredients don't make for good pizza unless someone knows how to get the crust right.</text>
                 <Opinions>
                     <Opinion target="ingredients" category="" polarity="positive" from_="20" to="31" />
-                    <Opinion target="ingredients" category="" polarity="positive" from_="48" to="59" />
                     <Opinion target="pizza" category="" polarity="negative" from_="80" to="85" />
                     <Opinion target="crust" category="" polarity="neutral" from_="122" to="127" />
                 </Opinions>
@@ -1126,7 +1124,6 @@
                     <Opinion target="ceviche mix (special)" category="" polarity="positive" from_="90" to="111" />
                     <Opinion target="crab dumplings" category="" polarity="positive" from_="113" to="127" />
                     <Opinion target="assorted sashimi" category="" polarity="positive" from_="129" to="145" />
-                    <Opinion target="sushi" category="" polarity="positive" from_="147" to="152" />
                     <Opinion target="rolls" category="" polarity="positive" from_="157" to="162" />
                     <Opinion target="sake" category="" polarity="positive" from_="177" to="181" />
                     <Opinion target="banana tempura" category="" polarity="positive" from_="191" to="205" />
@@ -1278,7 +1275,6 @@
                 <Opinions>
                     <Opinion target="sangria" category="" polarity="neutral" from_="52" to="59" />
                     <Opinion target="bar" category="" polarity="neutral" from_="29" to="32" />
-                    <Opinion target="bar" category="" polarity="neutral" from_="86" to="89" />
                     <Opinion target="bartender" category="" polarity="negative" from_="165" to="174" />
                 </Opinions>
             </sentence>
@@ -1454,8 +1450,6 @@
                 <text>It costs $2 extra to turn a regular roll into an inside-out roll, but the roll more than triples in size, and that's not just from the rice.</text>
                 <Opinions>
                     <Opinion target="roll" category="" polarity="negative" from_="36" to="40" />
-                    <Opinion target="roll" category="" polarity="negative" from_="60" to="64" />
-                    <Opinion target="roll" category="" polarity="negative" from_="74" to="78" />
                     <Opinion target="rice" category="" polarity="neutral" from_="135" to="139" />
                 </Opinions>
             </sentence>
@@ -1647,8 +1641,6 @@
                 <text>The man that was hosting promised to save a table for our party of 7, then sat a party of 2 at the very table he was saving (mean while there were boths open all around).</text>
                 <Opinions>
                     <Opinion target="man" category="" polarity="negative" from_="4" to="7" />
-                    <Opinion target="table" category="" polarity="neutral" from_="44" to="49" />
-                    <Opinion target="table" category="" polarity="negative" from_="104" to="109" />
                 </Opinions>
             </sentence>
             <sentence id="1957">
@@ -1678,9 +1670,7 @@
                 <text>Decor is nice and minimalist, food simple yet very well presented and cooked, and the wine list matches the food very well.</text>
                 <Opinions>
                     <Opinion target="Decor" category="" polarity="positive" from_="0" to="5" />
-                    <Opinion target="food" category="" polarity="positive" from_="30" to="34" />
                     <Opinion target="wine list" category="" polarity="positive" from_="86" to="95" />
-                    <Opinion target="food" category="" polarity="neutral" from_="108" to="112" />
                 </Opinions>
             </sentence>
             <sentence id="1853">
@@ -2305,13 +2295,6 @@
                 <text>Really though, where's the seasoning?</text>
                 <Opinions>
                     <Opinion target="seasoning" category="" polarity="negative" from_="27" to="36" />
-                </Opinions>
-            </sentence>
-            <sentence id="796">
-                <text>The food was just OK, at least for what food was available.</text>
-                <Opinions>
-                    <Opinion target="food" category="" polarity="neutral" from_="4" to="8" />
-                    <Opinion target="food" category="" polarity="negative" from_="40" to="44" />
                 </Opinions>
             </sentence>
             <sentence id="178">
@@ -3293,8 +3276,6 @@
                     <Opinion target="table" category="" polarity="negative" from_="19" to="24" />
                     <Opinion target="served" category="" polarity="negative" from_="126" to="132" />
                     <Opinion target="dishes" category="" polarity="negative" from_="133" to="139" />
-                    <Opinion target="table" category="" polarity="negative" from_="231" to="236" />
-                    <Opinion target="served" category="" polarity="negative" from_="246" to="252" />
                     <Opinion target="bill" category="" polarity="negative" from_="340" to="344" />
                 </Opinions>
             </sentence>
@@ -3409,7 +3390,6 @@
                 <text>if you're looking for perfect traditional sushi, go here - if you're looking for interesting combinations, try sushi of gari's (east side).</text>
                 <Opinions>
                     <Opinion target="sushi" category="" polarity="positive" from_="42" to="47" />
-                    <Opinion target="sushi" category="" polarity="positive" from_="111" to="116" />
                 </Opinions>
             </sentence>
             <sentence id="2621">
@@ -3636,8 +3616,6 @@
                 <Opinions>
                     <Opinion target="meal" category="" polarity="positive" from_="17" to="21" />
                     <Opinion target="server" category="" polarity="positive" from_="31" to="37" />
-                    <Opinion target="wine" category="" polarity="positive" from_="67" to="71" />
-                    <Opinion target="wine" category="" polarity="negative" from_="146" to="150" />
                     <Opinion target="price rang" category="" polarity="positive" from_="79" to="89" />
                     <Opinion target="priced" category="" polarity="neutral" from_="139" to="145" />
                 </Opinions>
@@ -4220,7 +4198,6 @@
                 <text>The food is a diamond in rough -- the food is delicious and homemade with the perfect balance of herbs and tomatoes.</text>
                 <Opinions>
                     <Opinion target="food" category="" polarity="positive" from_="4" to="8" />
-                    <Opinion target="food" category="" polarity="positive" from_="38" to="42" />
                     <Opinion target="herbs" category="" polarity="positive" from_="97" to="102" />
                     <Opinion target="tomatoes" category="" polarity="positive" from_="107" to="115" />
                 </Opinions>
@@ -4691,7 +4668,6 @@
                 <Opinions>
                     <Opinion target="wine" category="" polarity="positive" from_="71" to="75" />
                     <Opinion target="ambience" category="" polarity="positive" from_="119" to="127" />
-                    <Opinion target="wine" category="" polarity="positive" from_="97" to="101" />
                 </Opinions>
             </sentence>
             <sentence id="2640">
@@ -5427,7 +5403,6 @@
                 <Opinions>
                     <Opinion target="dish" category="" polarity="positive" from_="15" to="19" />
                     <Opinion target="Thai spiced curry noodles with shrimp" category="" polarity="positive" from_="27" to="64" />
-                    <Opinion target="dish" category="" polarity="positive" from_="69" to="73" />
                     <Opinion target="cost" category="" polarity="positive" from_="85" to="89" />
                 </Opinions>
             </sentence>
@@ -5894,7 +5869,6 @@
                     <Opinion target="food" category="" polarity="positive" from_="21" to="25" />
                     <Opinion target="service" category="" polarity="negative" from_="67" to="74" />
                     <Opinion target="waiter" category="" polarity="negative" from_="76" to="82" />
-                    <Opinion target="service" category="" polarity="negative" from_="116" to="123" />
                 </Opinions>
             </sentence>
             <sentence id="401">
@@ -5907,13 +5881,6 @@
                 <text>We've been to Grocery three times and not once has an item on the menu disappointed.</text>
                 <Opinions>
                     <Opinion target="menu" category="" polarity="positive" from_="66" to="70" />
-                </Opinions>
-            </sentence>
-            <sentence id="3298">
-                <text>The food is very good too but for the most part, it's just regular food, nothing special.</text>
-                <Opinions>
-                    <Opinion target="food" category="" polarity="positive" from_="4" to="8" />
-                    <Opinion target="food" category="" polarity="neutral" from_="67" to="71" />
                 </Opinions>
             </sentence>
             <sentence id="1344">
@@ -5948,7 +5915,6 @@
                     <Opinion target="Guacamole+shrimp appetizer" category="" polarity="positive" from_="0" to="26" />
                     <Opinion target="filet" category="" polarity="positive" from_="61" to="66" />
                     <Opinion target="frites" category="" polarity="negative" from_="100" to="106" />
-                    <Opinion target="filet" category="" polarity="positive" from_="131" to="136" />
                 </Opinions>
             </sentence>
             <sentence id="3536">
@@ -6451,7 +6417,6 @@
                 <text>I like Mamoun's food as well, but side by side, Kati Rolls just produce tastier food hands down.</text>
                 <Opinions>
                     <Opinion target="food" category="" polarity="positive" from_="16" to="20" />
-                    <Opinion target="food" category="" polarity="positive" from_="80" to="84" />
                 </Opinions>
             </sentence>
             <sentence id="1607">
@@ -6632,7 +6597,6 @@
                 <Opinions>
                     <Opinion target="food" category="" polarity="negative" from_="20" to="24" />
                     <Opinion target="service" category="" polarity="negative" from_="33" to="40" />
-                    <Opinion target="service" category="" polarity="negative" from_="76" to="83" />
                     <Opinion target="good" category="" polarity="positive" from_="63" to="67" />
                 </Opinions>
             </sentence>
@@ -7574,7 +7538,6 @@
                 <Opinions>
                     <Opinion target="bagel" category="" polarity="negative" from_="38" to="43" />
                     <Opinion target="eggs" category="" polarity="negative" from_="65" to="69" />
-                    <Opinion target="bagel" category="" polarity="negative" from_="78" to="83" />
                 </Opinions>
             </sentence>
             <sentence id="552">
@@ -8340,7 +8303,6 @@
                 <text>The only disappointment was the coat check girls who didn't seem to know what a customer is on a realtively non-busy night (for the coat check girls).</text>
                 <Opinions>
                     <Opinion target="coat check girls" category="" polarity="negative" from_="32" to="48" />
-                    <Opinion target="coat check girls" category="" polarity="negative" from_="132" to="148" />
                 </Opinions>
             </sentence>
             <sentence id="800">
@@ -8392,8 +8354,6 @@
             <sentence id="3139">
                 <text>Where tanks in other Chinatown restaurants display a lurking myriad of sad-looking marine life in their murky waters, the tanks at Ping's are clear as glass with healthy-looking creatures who do not yet know that they will be part of some dim sum lover's brunch.</text>
                 <Opinions>
-                    <Opinion target="tanks" category="" polarity="negative" from_="6" to="11" />
-                    <Opinion target="tanks" category="" polarity="positive" from_="122" to="127" />
                     <Opinion target="dim sum" category="" polarity="neutral" from_="239" to="246" />
                     <Opinion target="brunch" category="" polarity="neutral" from_="255" to="261" />
                 </Opinions>
@@ -8874,9 +8834,7 @@
             <sentence id="2418">
                 <text>The bread is the soft paratha bread (unlike the plain bread they use in Calcutta), and the stuffing is tandoori styled and very flavorful.</text>
                 <Opinions>
-                    <Opinion target="bread" category="" polarity="positive" from_="4" to="9" />
                     <Opinion target="paratha bread" category="" polarity="positive" from_="22" to="35" />
-                    <Opinion target="bread" category="" polarity="negative" from_="54" to="59" />
                     <Opinion target="stuffing" category="" polarity="positive" from_="91" to="99" />
                     <Opinion target="tandoori" category="" polarity="positive" from_="103" to="111" />
                 </Opinions>
@@ -8893,11 +8851,7 @@
             <sentence id="2688">
                 <text>The food can get pricey but the prixe fixe tasting menu is the greatest food for a good price and they cater the food to any food allergies or food you don't like.</text>
                 <Opinions>
-                    <Opinion target="food" category="" polarity="positive" from_="72" to="76" />
                     <Opinion target="price" category="" polarity="positive" from_="88" to="93" />
-                    <Opinion target="food" category="" polarity="positive" from_="113" to="117" />
-                    <Opinion target="food" category="" polarity="neutral" from_="125" to="129" />
-                    <Opinion target="food" category="" polarity="negative" from_="143" to="147" />
                 </Opinions>
             </sentence>
             <sentence id="2737">
@@ -9297,7 +9251,6 @@
                 <text>Unless you are eating in the Pizzeria side of this place, and are not in a rush, this place is a bad idea.</text>
                 <Opinions>
                     <Opinion target="place" category="" polarity="negative" from_="51" to="56" />
-                    <Opinion target="place" category="" polarity="negative" from_="86" to="91" />
                 </Opinions>
             </sentence>
             <sentence id="1190">
@@ -9324,7 +9277,6 @@
                     <Opinion target="chef" category="" polarity="positive" from_="163" to="167" />
                     <Opinion target="menu" category="" polarity="positive" from_="186" to="190" />
                     <Opinion target="dish" category="" polarity="negative" from_="237" to="241" />
-                    <Opinion target="portions" category="" polarity="negative" from_="270" to="278" />
                 </Opinions>
             </sentence>
             <sentence id="416">
@@ -9730,13 +9682,6 @@
                 <text>big and soft as well as good lunch food.</text>
                 <Opinions>
                     <Opinion target="lunch food" category="" polarity="positive" from_="29" to="39" />
-                </Opinions>
-            </sentence>
-            <sentence id="967">
-                <text>No food snobs allowed, this place is for people who appreciate good food.</text>
-                <Opinions>
-                    <Opinion target="food" category="" polarity="neutral" from_="3" to="7" />
-                    <Opinion target="food" category="" polarity="positive" from_="68" to="72" />
                 </Opinions>
             </sentence>
             <sentence id="1127">
@@ -12030,7 +11975,6 @@
                 <text>And their prices are very high - they actually think that they can get away with charging such prices for such terrible food and service!</text>
                 <Opinions>
                     <Opinion target="prices" category="" polarity="negative" from_="10" to="16" />
-                    <Opinion target="prices" category="" polarity="negative" from_="95" to="101" />
                     <Opinion target="food" category="" polarity="negative" from_="120" to="124" />
                     <Opinion target="service" category="" polarity="negative" from_="129" to="136" />
                 </Opinions>
@@ -12405,9 +12349,7 @@
             <sentence id="3087">
                 <text>While most people can attest to spending over $50 on drinks in New York bars and hardly feeling a thing, the drinks here are plentiful and unique.</text>
                 <Opinions>
-                    <Opinion target="drinks" category="" polarity="negative" from_="53" to="59" />
                     <Opinion target="bars" category="" polarity="negative" from_="72" to="76" />
-                    <Opinion target="drinks" category="" polarity="positive" from_="109" to="115" />
                 </Opinions>
             </sentence>
             <sentence id="2847">

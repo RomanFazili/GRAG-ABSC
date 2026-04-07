@@ -447,7 +447,6 @@
                 <text>It has a 10 hour battery life when you're doing web browsing and word editing, making it perfect for the classroom or office, and in terms of gaming and movie playing it'll have a battery life of just over 5 hours.</text>
                 <Opinions>
                     <Opinion target="battery life" category="" polarity="positive" from_="17" to="29" />
-                    <Opinion target="battery life" category="" polarity="positive" from_="180" to="192" />
                     <Opinion target="gaming" category="" polarity="neutral" from_="142" to="148" />
                     <Opinion target="movie playing" category="" polarity="neutral" from_="153" to="166" />
                     <Opinion target="web browsing" category="" polarity="neutral" from_="48" to="60" />
@@ -527,13 +526,6 @@
                 <text>It is always reliable, never bugged and responds well.</text>
                 <Opinions>
                     <Opinion target="responds" category="" polarity="positive" from_="40" to="48" />
-                </Opinions>
-            </sentence>
-            <sentence id="1928">
-                <text>After about a week I finally got it back and was told that the motherboard had failed and so they installed a new motherboard.</text>
-                <Opinions>
-                    <Opinion target="motherboard" category="" polarity="negative" from_="63" to="74" />
-                    <Opinion target="motherboard" category="" polarity="neutral" from_="114" to="125" />
                 </Opinions>
             </sentence>
             <sentence id="1099">
@@ -793,7 +785,6 @@
                 <text>the only fact i dont like about apples is they generally use safari and i dont use safari but after i install Mozzilla firfox i love every single bit about it.</text>
                 <Opinions>
                     <Opinion target="safari" category="" polarity="negative" from_="61" to="67" />
-                    <Opinion target="safari" category="" polarity="negative" from_="83" to="89" />
                     <Opinion target="Mozzilla firfox" category="" polarity="positive" from_="110" to="125" />
                 </Opinions>
             </sentence>
@@ -865,7 +856,6 @@
                     <Opinion target="connector" category="" polarity="negative" from_="22" to="31" />
                     <Opinion target="power supply" category="" polarity="negative" from_="41" to="53" />
                     <Opinion target="warrenty" category="" polarity="negative" from_="72" to="80" />
-                    <Opinion target="power supply" category="" polarity="negative" from_="93" to="105" />
                 </Opinions>
             </sentence>
             <sentence id="2886">
@@ -1211,7 +1201,6 @@
                 <Opinions>
                     <Opinion target="trackpad" category="" polarity="negative" from_="41" to="49" />
                     <Opinion target="external mouse" category="" polarity="neutral" from_="65" to="79" />
-                    <Opinion target="trackpad" category="" polarity="negative" from_="106" to="114" />
                 </Opinions>
             </sentence>
             <sentence id="2796">
@@ -1269,9 +1258,7 @@
                 <text>I think part of the problem with this computer is Vista, yet I know Vista isn't the entire issue because my latest purchase was my Acer and it also has Vista (I should have waited the few months to get the next operating system).</text>
                 <Opinions>
                     <Opinion target="Vista" category="" polarity="negative" from_="50" to="55" />
-                    <Opinion target="Vista" category="" polarity="negative" from_="68" to="73" />
                     <Opinion target="operating system" category="" polarity="neutral" from_="211" to="227" />
-                    <Opinion target="Vista" category="" polarity="negative" from_="152" to="157" />
                 </Opinions>
             </sentence>
             <sentence id="2377">
@@ -1345,7 +1332,6 @@
                 <text>The OS is also very user friendly, even for those that switch from a PC, with a little practice you can take full advantage of this OS!</text>
                 <Opinions>
                     <Opinion target="OS" category="" polarity="positive" from_="4" to="6" />
-                    <Opinion target="OS" category="" polarity="positive" from_="132" to="134" />
                 </Opinions>
             </sentence>
             <sentence id="455">
@@ -1670,13 +1656,6 @@
                     <Opinion target="size" category="" polarity="negative" from_="53" to="57" />
                 </Opinions>
             </sentence>
-            <sentence id="2876">
-                <text>The games included are very good games.</text>
-                <Opinions>
-                    <Opinion target="games" category="" polarity="neutral" from_="4" to="9" />
-                    <Opinion target="games" category="" polarity="positive" from_="33" to="38" />
-                </Opinions>
-            </sentence>
             <sentence id="2141">
                 <text>this computer will last you at least 7 years, thats an amazing life spanned an electronic.</text>
                 <Opinions>
@@ -1868,7 +1847,6 @@
                     <Opinion target="windows" category="" polarity="negative" from_="70" to="77" />
                     <Opinion target="boot up" category="" polarity="negative" from_="81" to="88" />
                     <Opinion target="shut down" category="" polarity="negative" from_="92" to="101" />
-                    <Opinion target="windows" category="" polarity="negative" from_="138" to="145" />
                 </Opinions>
             </sentence>
             <sentence id="451">
@@ -2033,8 +2011,6 @@
                 <text>I love the dock where I can simply drop a file ontop of a particular program, and the program will simply open that file.</text>
                 <Opinions>
                     <Opinion target="dock" category="" polarity="positive" from_="11" to="15" />
-                    <Opinion target="program" category="" polarity="neutral" from_="69" to="76" />
-                    <Opinion target="program" category="" polarity="positive" from_="86" to="93" />
                 </Opinions>
             </sentence>
             <sentence id="347">
@@ -2138,7 +2114,6 @@
                 <Opinions>
                     <Opinion target="value" category="" polarity="positive" from_="90" to="95" />
                     <Opinion target="price" category="" polarity="positive" from_="117" to="122" />
-                    <Opinion target="value" category="" polarity="positive" from_="220" to="225" />
                 </Opinions>
             </sentence>
             <sentence id="970">
@@ -2282,8 +2257,6 @@
                 <text>I noticed windows has a new system called Windows 7, what about us Vista users?  They should get all the bugs out of Vista before investing in a new system.</text>
                 <Opinions>
                     <Opinion target="Windows 7" category="" polarity="neutral" from_="42" to="51" />
-                    <Opinion target="Vista" category="" polarity="neutral" from_="67" to="72" />
-                    <Opinion target="Vista" category="" polarity="negative" from_="117" to="122" />
                     <Opinion target="windows" category="" polarity="neutral" from_="10" to="17" />
                 </Opinions>
             </sentence>
@@ -2471,7 +2444,6 @@
                 <text>Bigger HD, better graphics card, and a bid HD.</text>
                 <Opinions>
                     <Opinion target="HD" category="" polarity="positive" from_="7" to="9" />
-                    <Opinion target="HD" category="" polarity="positive" from_="43" to="45" />
                     <Opinion target="graphics card" category="" polarity="positive" from_="18" to="31" />
                 </Opinions>
             </sentence>
@@ -2639,7 +2611,6 @@
                 <text>with the switch being at the top you need to memorize the key combination rather than just flicking a switch.</text>
                 <Opinions>
                     <Opinion target="switch" category="" polarity="negative" from_="9" to="15" />
-                    <Opinion target="switch" category="" polarity="negative" from_="102" to="108" />
                 </Opinions>
             </sentence>
             <sentence id="1066">
@@ -3348,7 +3319,6 @@
                 <text>the touch pad is fine - again, it's a real touch pad.</text>
                 <Opinions>
                     <Opinion target="touch pad" category="" polarity="positive" from_="4" to="13" />
-                    <Opinion target="touch pad" category="" polarity="positive" from_="43" to="52" />
                 </Opinions>
             </sentence>
             <sentence id="2448">
@@ -3678,7 +3648,6 @@
                 <text>I got it back again and was told the motherboard had been replaced, so I was now on the SECOND motherboard within 3 months.</text>
                 <Opinions>
                     <Opinion target="motherboard" category="" polarity="negative" from_="37" to="48" />
-                    <Opinion target="motherboard" category="" polarity="negative" from_="95" to="106" />
                 </Opinions>
             </sentence>
             <sentence id="3041">
@@ -3719,7 +3688,6 @@
                 <text>Not only are the versions of these programs able to be saved, worked on and opened on both a PC and Mac, the versions of these programs on a Mac are graphically and functionally superior.</text>
                 <Opinions>
                     <Opinion target="programs" category="" polarity="positive" from_="35" to="43" />
-                    <Opinion target="programs" category="" polarity="positive" from_="127" to="135" />
                 </Opinions>
             </sentence>
             <sentence id="2155">
@@ -3932,7 +3900,6 @@
                 <text>Called tech support and got the usual Acer "We don't support software but for $$$ we can help you" I explained there was no software involved in booting.</text>
                 <Opinions>
                     <Opinion target="software" category="" polarity="negative" from_="61" to="69" />
-                    <Opinion target="software" category="" polarity="negative" from_="124" to="132" />
                     <Opinion target="booting" category="" polarity="negative" from_="145" to="152" />
                 </Opinions>
             </sentence>
@@ -4164,13 +4131,6 @@
                 <text>This wiped out several programs that were installed on the computer when it was bought.</text>
                 <Opinions>
                     <Opinion target="programs" category="" polarity="negative" from_="23" to="31" />
-                </Opinions>
-            </sentence>
-            <sentence id="333">
-                <text>It's graphics aren't bad at all, for the lower end of the MacBook Pro spectrum, easily capable of running StarCraft II and other games with comparable graphics.</text>
-                <Opinions>
-                    <Opinion target="graphics" category="" polarity="positive" from_="5" to="13" />
-                    <Opinion target="graphics" category="" polarity="neutral" from_="151" to="159" />
                 </Opinions>
             </sentence>
             <sentence id="1436">
@@ -4501,8 +4461,6 @@
                 <Opinions>
                     <Opinion target="headphone" category="" polarity="negative" from_="4" to="13" />
                     <Opinion target="mic jack" category="" polarity="negative" from_="18" to="26" />
-                    <Opinion target="touch-pad" category="" polarity="neutral" from_="43" to="52" />
-                    <Opinion target="touch-pad" category="" polarity="negative" from_="64" to="73" />
                     <Opinion target="headphones" category="" polarity="negative" from_="97" to="107" />
                     <Opinion target="mic" category="" polarity="negative" from_="108" to="111" />
                 </Opinions>
@@ -4584,7 +4542,6 @@
                 <Opinions>
                     <Opinion target="KEYS" category="" polarity="negative" from_="46" to="50" />
                     <Opinion target="KEYBOARD" category="" polarity="negative" from_="105" to="113" />
-                    <Opinion target="KEYS" category="" polarity="negative" from_="141" to="145" />
                 </Opinions>
             </sentence>
             <sentence id="2504">
@@ -4669,13 +4626,6 @@
                 <Opinions>
                     <Opinion target="battery" category="" polarity="neutral" from_="63" to="70" />
                     <Opinion target="hard disk" category="" polarity="neutral" from_="76" to="85" />
-                </Opinions>
-            </sentence>
-            <sentence id="2762">
-                <text>The battery doesn't last long but I'm sure an upgrade battery would solve that problem.</text>
-                <Opinions>
-                    <Opinion target="battery" category="" polarity="negative" from_="4" to="11" />
-                    <Opinion target="battery" category="" polarity="positive" from_="54" to="61" />
                 </Opinions>
             </sentence>
             <sentence id="2440">
@@ -5214,15 +5164,12 @@
                 <text>The track pad to me is what really stands out though, you can do several different things with it just depending on how many fingers you use on the track pad, awesome thinking Apple!</text>
                 <Opinions>
                     <Opinion target="track pad" category="" polarity="positive" from_="4" to="13" />
-                    <Opinion target="track pad" category="" polarity="positive" from_="148" to="157" />
                 </Opinions>
             </sentence>
             <sentence id="953">
                 <text>  Now I had not tried to use this since the disc drive had been replaced and after taking it back to the Geek Squad I found out they had accidently not used the right drive when they replaced the first one, so back it went to get the correct drive.</text>
                 <Opinions>
                     <Opinion target="disc drive" category="" polarity="negative" from_="44" to="54" />
-                    <Opinion target="drive" category="" polarity="negative" from_="167" to="172" />
-                    <Opinion target="drive" category="" polarity="neutral" from_="242" to="247" />
                 </Opinions>
             </sentence>
             <sentence id="1179">
@@ -5503,7 +5450,6 @@
                 <Opinions>
                     <Opinion target="iDVD" category="" polarity="positive" from_="12" to="16" />
                     <Opinion target="program" category="" polarity="positive" from_="20" to="27" />
-                    <Opinion target="program" category="" polarity="positive" from_="127" to="134" />
                 </Opinions>
             </sentence>
             <sentence id="459">
@@ -5757,7 +5703,6 @@
                 <text>I get a ton of compliments on its size, and speaking as someone who regularly commutes on a bus, I can attest to the fact that this is the perfect size computer if you're restricted to the width of your body for computing room.</text>
                 <Opinions>
                     <Opinion target="size" category="" polarity="positive" from_="34" to="38" />
-                    <Opinion target="size" category="" polarity="positive" from_="147" to="151" />
                 </Opinions>
             </sentence>
             <sentence id="1435">
@@ -5776,7 +5721,6 @@
                 <text>also the keyboard does not liht up so unless your sitting in a room with some light you cant see anything and thats bad for me because my boyfriend tends to watch tv in the dark at night which leaves me with no way of seeing the keyboard.</text>
                 <Opinions>
                     <Opinion target="keyboard" category="" polarity="negative" from_="9" to="17" />
-                    <Opinion target="keyboard" category="" polarity="negative" from_="229" to="237" />
                 </Opinions>
             </sentence>
             <sentence id="1925">
@@ -5832,7 +5776,6 @@
                 <text>In fact, somehow (and I never opened it up) some specks of dust or something got inside the screen and are now there permanently, behind the front of the screen, in the way of the display.</text>
                 <Opinions>
                     <Opinion target="screen" category="" polarity="negative" from_="92" to="98" />
-                    <Opinion target="screen" category="" polarity="negative" from_="154" to="160" />
                     <Opinion target="display" category="" polarity="negative" from_="180" to="187" />
                 </Opinions>
             </sentence>
@@ -6152,7 +6095,6 @@
                 <text>The keyboard is like no other laptop keyboard.</text>
                 <Opinions>
                     <Opinion target="keyboard" category="" polarity="neutral" from_="4" to="12" />
-                    <Opinion target="keyboard" category="" polarity="neutral" from_="37" to="45" />
                 </Opinions>
             </sentence>
             <sentence id="613">
@@ -6178,7 +6120,6 @@
                 <text>I called their repair depot as was told they would send Me a new box to return the computer to the repair depot.</text>
                 <Opinions>
                     <Opinion target="repair depot" category="" polarity="neutral" from_="15" to="27" />
-                    <Opinion target="repair depot" category="" polarity="neutral" from_="99" to="111" />
                 </Opinions>
             </sentence>
             <sentence id="2627">
@@ -6592,7 +6533,6 @@
                 <text>  Then I've fixed the DC jack (inside the unit), rewired the DC jack to the OUTside of the laptop, replaced the power brick.</text>
                 <Opinions>
                     <Opinion target="DC jack" category="" polarity="neutral" from_="22" to="29" />
-                    <Opinion target="DC jack" category="" polarity="neutral" from_="61" to="68" />
                     <Opinion target="power brick" category="" polarity="neutral" from_="112" to="123" />
                 </Opinions>
             </sentence>
@@ -6986,7 +6926,6 @@
                 <text>No, tey don't even support their own bios and it "could be a problem with the bios" How can a company that makes a fairly decent product get away with such insanity??!!</text>
                 <Opinions>
                     <Opinion target="bios" category="" polarity="negative" from_="37" to="41" />
-                    <Opinion target="bios" category="" polarity="negative" from_="78" to="82" />
                 </Opinions>
             </sentence>
             <sentence id="1358">
@@ -6999,8 +6938,6 @@
                 <text>It started out by randomly ceasing to charge when it was plugged in (mousing over the battery icon would read, for example, "74%, plugged in, not charging"), requiring me to unplug it and plug it back in several times to get it to charge.</text>
                 <Opinions>
                     <Opinion target="charging" category="" polarity="negative" from_="146" to="154" />
-                    <Opinion target="charge" category="" polarity="negative" from_="38" to="44" />
-                    <Opinion target="charge" category="" polarity="neutral" from_="231" to="237" />
                 </Opinions>
             </sentence>
             <sentence id="1818">
@@ -7098,7 +7035,6 @@
                 <text>Apparently under the screen there are 2 little screws and when the screen gets moved back and forth, they come loose.</text>
                 <Opinions>
                     <Opinion target="screen" category="" polarity="neutral" from_="21" to="27" />
-                    <Opinion target="screen" category="" polarity="neutral" from_="67" to="73" />
                 </Opinions>
             </sentence>
             <sentence id="2347">
@@ -7236,7 +7172,6 @@
                 <Opinions>
                     <Opinion target="connection card" category="" polarity="neutral" from_="73" to="88" />
                     <Opinion target="warranty" category="" polarity="negative" from_="110" to="118" />
-                    <Opinion target="warranty" category="" polarity="negative" from_="161" to="169" />
                 </Opinions>
             </sentence>
             <sentence id="1074">
@@ -7715,13 +7650,6 @@
                     <Opinion target="programs" category="" polarity="negative" from_="41" to="49" />
                 </Opinions>
             </sentence>
-            <sentence id="879">
-                <text>and they replaced the awesome ergonomic small lightweight power supply with a power supply that weighed more than the machine itself.</text>
-                <Opinions>
-                    <Opinion target="power supply" category="" polarity="positive" from_="58" to="70" />
-                    <Opinion target="power supply" category="" polarity="negative" from_="78" to="90" />
-                </Opinions>
-            </sentence>
             <sentence id="1592">
                 <text>Enjoy that Toshib force and durability unparalleled</text>
                 <Opinions>
@@ -7843,7 +7771,6 @@
                 <Opinions>
                     <Opinion target="battery" category="" polarity="negative" from_="4" to="11" />
                     <Opinion target="charge" category="" polarity="negative" from_="25" to="31" />
-                    <Opinion target="charge" category="" polarity="negative" from_="94" to="100" />
                 </Opinions>
             </sentence>
             <sentence id="1366">
@@ -7958,7 +7885,6 @@
                 <Opinions>
                     <Opinion target="battery" category="" polarity="negative" from_="6" to="13" />
                     <Opinion target="charge" category="" polarity="negative" from_="27" to="33" />
-                    <Opinion target="charge" category="" polarity="negative" from_="96" to="102" />
                 </Opinions>
             </sentence>
             <sentence id="963">
@@ -8060,8 +7986,6 @@
                 <text>The battery life was supposed to be 6 hours, but even if I ran off the battery with the high effeciency setting the battery would only last me on average about 2.5 to 3 hours.</text>
                 <Opinions>
                     <Opinion target="battery life" category="" polarity="negative" from_="4" to="16" />
-                    <Opinion target="battery" category="" polarity="neutral" from_="71" to="78" />
-                    <Opinion target="battery" category="" polarity="negative" from_="116" to="123" />
                 </Opinions>
             </sentence>
             <sentence id="2990">
@@ -8543,7 +8467,6 @@
                 <Opinions>
                     <Opinion target="components" category="" polarity="positive" from_="112" to="122" />
                     <Opinion target="price" category="" polarity="positive" from_="151" to="156" />
-                    <Opinion target="price" category="" polarity="positive" from_="313" to="318" />
                 </Opinions>
             </sentence>
             <sentence id="1410">
@@ -8623,7 +8546,6 @@
                 <Opinions>
                     <Opinion target="Touchpad" category="" polarity="negative" from_="20" to="28" />
                     <Opinion target="USB" category="" polarity="negative" from_="58" to="61" />
-                    <Opinion target="Touchpad" category="" polarity="negative" from_="90" to="98" />
                 </Opinions>
             </sentence>
             <sentence id="1749">
@@ -8646,8 +8568,6 @@
                 <text>  And at one point, they blame me for installing a bad memory stick when I upgrade my memory for the first time during my purchase of the laptop (I bought the memory stick they recomended).</text>
                 <Opinions>
                     <Opinion target="memory" category="" polarity="neutral" from_="86" to="92" />
-                    <Opinion target="memory stick" category="" polarity="negative" from_="55" to="67" />
-                    <Opinion target="memory stick" category="" polarity="neutral" from_="159" to="171" />
                 </Opinions>
             </sentence>
             <sentence id="1438">
@@ -8845,7 +8765,6 @@
                     <Opinion target="network connection" category="" polarity="negative" from_="89" to="107" />
                     <Opinion target="setup" category="" polarity="negative" from_="138" to="143" />
                     <Opinion target="cords" category="" polarity="negative" from_="42" to="47" />
-                    <Opinion target="cords" category="" polarity="negative" from_="149" to="154" />
                 </Opinions>
             </sentence>
             <sentence id="775">
@@ -8876,7 +8795,6 @@
                 <text>The fact that the screen reacts to the lighting around you is an added luxury-when you are working around others in dark areas and want privacy or don't want to bother them with bright lighting, it is very convenient to have a darker, softer lit screen.</text>
                 <Opinions>
                     <Opinion target="screen" category="" polarity="positive" from_="18" to="24" />
-                    <Opinion target="screen" category="" polarity="positive" from_="246" to="252" />
                 </Opinions>
             </sentence>
             <sentence id="808">
@@ -9296,7 +9214,6 @@
                 <Opinions>
                     <Opinion target="iWork" category="" polarity="negative" from_="7" to="12" />
                     <Opinion target="MS Office" category="" polarity="negative" from_="16" to="25" />
-                    <Opinion target="MS Office" category="" polarity="negative" from_="49" to="58" />
                 </Opinions>
             </sentence>
             <sentence id="1039">

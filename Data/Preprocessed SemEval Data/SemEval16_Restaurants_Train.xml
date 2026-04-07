@@ -1759,7 +1759,6 @@
                 <Opinions>
                     <Opinion target="food" category="FOOD#QUALITY" polarity="negative" from="20" to="24" />
                     <Opinion target="service" category="SERVICE#GENERAL" polarity="negative" from="33" to="40" />
-                    <Opinion target="service" category="SERVICE#GENERAL" polarity="negative" from="76" to="83" />
                     <Opinion target="good" category="FOOD#QUALITY" polarity="positive" from="63" to="67" />
                 </Opinions>
             </sentence>
@@ -3535,8 +3534,6 @@
             <sentence id="1671113:4">
                 <text>The staff has been nice, but they seemed really stressed and the unisex bathroom needs to be cleaned more often.</text>
                 <Opinions>
-                    <Opinion target="staff" category="SERVICE#GENERAL" polarity="positive" from="4" to="9" />
-                    <Opinion target="staff" category="SERVICE#GENERAL" polarity="negative" from="4" to="9" />
                     <Opinion target="unisex bathroom" category="AMBIENCE#GENERAL" polarity="negative" from="65" to="80" />
                 </Opinions>
             </sentence>
@@ -3864,7 +3861,6 @@
                     <Opinion target="ceviche mix (special)" category="FOOD#QUALITY" polarity="positive" from="90" to="111" />
                     <Opinion target="crab dumplings" category="FOOD#QUALITY" polarity="positive" from="113" to="127" />
                     <Opinion target="assorted sashimi" category="FOOD#QUALITY" polarity="positive" from="129" to="145" />
-                    <Opinion target="sushi" category="FOOD#QUALITY" polarity="positive" from="147" to="152" />
                     <Opinion target="rolls" category="FOOD#QUALITY" polarity="positive" from="157" to="162" />
                     <Opinion target="sake" category="DRINKS#QUALITY" polarity="positive" from="177" to="181" />
                     <Opinion target="banana tempura" category="FOOD#QUALITY" polarity="positive" from="191" to="205" />
@@ -4089,13 +4085,6 @@
     </Review>
     <Review rid="378848">
         <sentences>
-            <sentence id="378848:1">
-                <text>The first time the sushi was outstanding, the second time it was a little bland.</text>
-                <Opinions>
-                    <Opinion target="sushi" category="FOOD#QUALITY" polarity="positive" from="19" to="24" />
-                    <Opinion target="sushi" category="FOOD#QUALITY" polarity="negative" from="19" to="24" />
-                </Opinions>
-            </sentence>
             <sentence id="378848:3">
                 <text>The blond wood decor is very soothing, the premium sake is excellent and the service is great.</text>
                 <Opinions>
@@ -5318,13 +5307,6 @@
                 <text>Cozy romantic atomosphere with only around 15 tables at most.</text>
                 <Opinions>
                     <Opinion target="atomosphere" category="AMBIENCE#GENERAL" polarity="positive" from="14" to="25" />
-                </Opinions>
-            </sentence>
-            <sentence id="541532:1">
-                <text>Service was very prompt but slightly rushed.</text>
-                <Opinions>
-                    <Opinion target="Service" category="SERVICE#GENERAL" polarity="positive" from="0" to="7" />
-                    <Opinion target="Service" category="SERVICE#GENERAL" polarity="negative" from="0" to="7" />
                 </Opinions>
             </sentence>
             <sentence id="541532:2">
@@ -7655,13 +7637,6 @@
                     <Opinion target="mushroom sauce" category="FOOD#QUALITY" polarity="negative" from="71" to="85" />
                 </Opinions>
             </sentence>
-            <sentence id="NP#4:4">
-                <text>I showed it to the manager, and he smilingly apologized and brought us two free desserts (but did not ask us what we wanted and so brought the last two desserts we would have asked for).</text>
-                <Opinions>
-                    <Opinion target="manager" category="SERVICE#GENERAL" polarity="positive" from="19" to="26" />
-                    <Opinion target="manager" category="SERVICE#GENERAL" polarity="negative" from="19" to="26" />
-                </Opinions>
-            </sentence>
             <sentence id="NP#4:7">
                 <text>The manager finally said he would comp the two glasses of wine (which cost less than the food), and made it seem like a big concession.</text>
                 <Opinions>
@@ -9342,8 +9317,6 @@
             <sentence id="WE#1:4">
                 <text>The pasta was well cooked, didn't have enough sauce though or flavor.</text>
                 <Opinions>
-                    <Opinion target="pasta" category="FOOD#QUALITY" polarity="positive" from="4" to="9" />
-                    <Opinion target="pasta" category="FOOD#QUALITY" polarity="negative" from="4" to="9" />
                     <Opinion target="pasta" category="FOOD#STYLE_OPTIONS" polarity="negative" from="4" to="9" />
                 </Opinions>
             </sentence>

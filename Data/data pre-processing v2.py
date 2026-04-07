@@ -131,6 +131,7 @@ def remove_duplicate_opinions(tree: ET.ElementTree) -> None:
 
     - Same (target, category) with different polarities -> remove every opinion in that group.
     - Same (target, category) with the same polarity (duplicates) -> keep one, remove the rest.
+    - Remove sentences that end up with no opinions after duplicate removal.
 
     Mutates tree in place.
     """
@@ -138,15 +139,19 @@ def remove_duplicate_opinions(tree: ET.ElementTree) -> None:
 
     removed_conflicting_groups: int = 0
     removed_duplicate_same_polarity: int = 0
+    sentences_removed: int = 0
 
     for review in root.findall('.//Review'):
         sentences = review.find('sentences')
         if sentences is None:
             continue
 
+        sentences_to_remove: list[ET.Element] = []
+
         for sentence in sentences.findall('sentence'):
             opinions_elem = sentence.find('Opinions')
             if opinions_elem is None:
+                sentences_to_remove.append(sentence)
                 continue
 
             opinions = list(opinions_elem.findall('Opinion'))
@@ -174,9 +179,18 @@ def remove_duplicate_opinions(tree: ET.ElementTree) -> None:
             for opinion in opinions_to_remove:
                 opinions_elem.remove(opinion)
 
+            # Check if sentence has no opinions left
+            if not opinions_elem.findall("Opinion"):
+                sentences_to_remove.append(sentence)
+
+        for sentence in sentences_to_remove:
+            sentences.remove(sentence)
+            sentences_removed += 1
+
     print("remove_duplicate_opinions:")
     print(f"  conflicting (target,category) groups removed entirely: {removed_conflicting_groups}")
     print(f"  redundant duplicate opinions removed (same polarity): {removed_duplicate_same_polarity}")
+    print(f"  sentences removed (no opinions left): {sentences_removed}")
 
 # (dataset_id, raw_xml_path, preprocessed_output_path, convert_from_semeval14)
 _DATASET_SPECS: list[tuple[str, str, str, bool]] = [
@@ -212,6 +226,6 @@ for train_id, test_id in _TRAIN_TEST_INTERSECTION_PAIRS:
 
 for dataset_id, _raw_path, output_path, _from14 in _DATASET_SPECS:
     print(f"\n=== {dataset_id} — remove_duplicate_opinions & save ===")
-    # remove_duplicate_opinions(trees[dataset_id])
+    remove_duplicate_opinions(trees[dataset_id])
     write_preprocessed_tree(trees[dataset_id], output_path)
     print(f"Saved: {output_path}")
