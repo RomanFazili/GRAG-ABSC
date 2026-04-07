@@ -180,6 +180,18 @@ class PromptBuilder:
         return prompt
 
     @staticmethod
+    def create_emma_zero_shot_prompt(text: str, target: str) -> str:
+        """
+        Zero-shot prompt for ABSC without ontology injection or fine-tuning, based on Emma's approach.
+        """
+        return f"""Your task is to classify the sentiment of a target aspect within a sentence.
+        You must respond with only one of the following words: positive, negative, or neutral.
+        
+        Sentence: {text}
+        Target Aspect: {target}
+        Sentiment:"""
+
+    @staticmethod
     def get_median_prompt_length_tokens(test_path: str, ontology_path: str, model: LLMModel) -> float:
         """
         Get the median prompt length in tokens for all combinations of settings.
@@ -226,6 +238,15 @@ class PromptBuilder:
         return statistics.median(token_counts)
 
 if __name__ == "__main__":
+    print("\n--- Emma's Zero-Shot Prompt ---")
+    print(PromptBuilder.create_emma_zero_shot_prompt(
+        text="The food was good",
+        target="food"
+    ))
+
+    exit()
+
+
     load_dotenv()
     train_path = os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TEST_DATA")
     ontology_path = os.getenv("PATH_TO_RESTAURANT_ONTOLOGY")
@@ -241,7 +262,6 @@ if __name__ == "__main__":
         ontology_selection_method=OntologySelectionMethod.Partial,
         ontology_format=OntologyFormat.XML,
     ))
-    exit()
 
     test_path = os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TEST_DATA")
     ontology_path = os.getenv("PATH_TO_RESTAURANT_ONTOLOGY")
