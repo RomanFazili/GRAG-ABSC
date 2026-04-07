@@ -154,30 +154,31 @@ class PromptBuilder:
 
         prompt = (
             "Instruction:\n"
-            "Your task is to classify the sentiment of a target aspect within a sentence.\n"
-            "You must respond with only one of the following words: positive, negative, or neutral.\n"
+            "Classify the sentiment of the target aspect in the sentence.\n"
+            "Respond with exactly one word: positive, negative, or neutral.\n"
         )
 
         if formatted_ontology:
             prompt += (
                 "\n"
-                f"You may use this ontology to help you:\n"
+                f"Make use of this ontology:\n"
                 f"{formatted_ontology}\n"
             )
 
         if formatted_demonstrations:
             prompt += (
                 "\n"
-                f"You may use these demonstration sentences with the given aspects and polarities to help you:\n"
+                f"Make use of these demonstration sentences:\n"
                 f"{formatted_demonstrations}\n"
             )
 
         prompt += (
             "\n"
-            f"Now, classify the sentiment of the target aspect in the following sentence respond with one of the following words: positive, negative, or neutral:\n"
+            f"Now Classify:\n"
             f"Sentence: {input_sentence}\n"
             f"Target Aspect: {aspect}\n"
             f"Target Aspect Category: {aspect_category}\n"
+            f"Sentiment:"
         )
 
         return prompt
