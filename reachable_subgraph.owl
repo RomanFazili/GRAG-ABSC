@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns:ns1="http://www.kimschouten.com/sentiment/restaurant#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="http://www.kimschouten.com/sentiment/restaurant#DrinksMention">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <ns1:aspect>DRINKS#PRICES</ns1:aspect>
+    <ns1:aspect>DRINKS#QUALITY</ns1:aspect>
+    <ns1:aspect>DRINKS#STYLE_OPTIONS</ns1:aspect>
+    <ns1:lex>drink</ns1:lex>
+    <rdfs:subClassOf rdf:resource="http://www.kimschouten.com/sentiment/restaurant#SustenanceMention"/>
+  </rdf:Description>
+</rdf:RDF>
