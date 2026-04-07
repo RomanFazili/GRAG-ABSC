@@ -10,6 +10,7 @@ from ontology_retriever import OntologyRetriever
 import os
 from dotenv import load_dotenv
 import json
+from sklearn.metrics import f1_score, classification_report
 
 load_dotenv()
 
@@ -28,6 +29,10 @@ class Job:
     model: str
     prompt: str | None
     llm_output: str | None
+
+    @property
+    def is_correct(self) -> bool:
+        return self.true_polarity.value.lower() == self.llm_output.lower()
 
     def as_dict(self) -> dict:
         return {
@@ -125,7 +130,21 @@ with open("results.jsonl", "w") as f:
     for job in results:
         f.write(json.dumps(job.as_dict()) + "\n")
 
+def calculate_evaluation_metrics(finished_jobs: list[Job]) -> dict:
+    """Calculates weighted and macro F1 scores from predictions"""
+    if not finished_jobs:
+        raise ValueError("No finished jobs to calculate evaluation metrics")
+    
+    y_true_labels: list[str] = [job.true_polarity.value for job in finished_jobs]
+    y_pred_labels: list[str] = [job.llm_output for job in finished_jobs]
+    
+    return {
+        "macro_f1": f1_score(y_true_labels, y_pred_labels, average="macro"),
+        "weighted_f1": f1_score(y_true_labels, y_pred_labels, average="weighted"),
+        "accuracy": sum(job.is_correct for job in finished_jobs) / len(finished_jobs),
+        "classification_report": classification_report(y_true_labels, y_pred_labels, output_dict=True),
+        "total_predictions": len(finished_jobs),
+        "correct_predictions": sum(job.is_correct for job in finished_jobs)
+    }
 
-print({job.llm_output for job in jobs})
-print(sum(1 for job in jobs if job.llm_output.lower() == job.true_polarity.value.lower()))
-print(len(jobs))
+print(calculate_evaluation_metrics(results))
