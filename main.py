@@ -134,6 +134,10 @@ def full_run(
                     max_tokens=1
                 )
                 answer = response.choices[0].message.content
+
+                if answer.lower() not in ["positive", "negative", "neutral"]:
+                    continue
+
                 print(answer)
                 job.llm_output = answer
                 return job
@@ -141,8 +145,10 @@ def full_run(
                 if attempt == 2:
                     raise
             except BadRequestError:
-                job.llm_output = "error"
-                return job
+                break
+
+        job.llm_output = "error"
+        return job
 
     async def main():
         tasks = [run(job) for job in jobs]
