@@ -347,8 +347,6 @@ class PromptBuilder:
     def get_median_prompt_length_tokens(test_path: str, ontology_path: str, model: LLMModel) -> float:
         """
         Get the median prompt length in tokens for all combinations of settings.
-
-        Restaurant 2015 test data on Gemma 2b IT tokenizer: 14254 tokens
         """
         import statistics
 
@@ -365,16 +363,13 @@ class PromptBuilder:
         sentence_retriever = SentenceRetriever(DataSet(test_path), ontology)
 
         token_counts: list[int] = []
-        for demonstration_selection_method in DemonstrationSelectionMethod:
-            if demonstration_selection_method == DemonstrationSelectionMethod.Graph:
-                continue
 
-            for selection_method in OntologySelectionMethod:
-                for ontology_format in OntologyFormat:
-                    for top_k in [0, 3]:
+        for top_k in [0, 3]:
+            for demonstration_selection_method in DemonstrationSelectionMethod:
+                for ontology_selection_method in OntologySelectionMethod:
+                    for ontology_format in OntologyFormat:
                         for sentence, aspects_categories_and_polarities in sentence_retriever.data_set.all_sentences_with_aspects_categories_and_polarities:
                             for aspect, aspect_category, _ in aspects_categories_and_polarities:
-                    
                                 prompt = PromptBuilder.build_prompt(
                                     input_sentence=sentence,
                                     aspect=aspect,
@@ -383,11 +378,18 @@ class PromptBuilder:
                                     top_k=top_k,
                                     sentence_retriever=sentence_retriever,
                                     ontology_retriever=ontology_retriever,
-                                    ontology_selection_method=selection_method,
+                                    ontology_selection_method=ontology_selection_method,
                                     ontology_format=ontology_format,
                                 )
 
                                 token_counts.append(len(tokenizer.encode(prompt, add_special_tokens=False)))
+
+                        if ontology_selection_method == OntologySelectionMethod.Nothing:
+                            break # We only need 1 ontology format run for Nothing, so we break on the ontology format
+
+                if top_k == 0:
+                    break # We only need 1 DemonstrationSelectionMethod run for 0 top_k, so we break on the DemonstrationSelectionMethod
+
         return statistics.median(token_counts)
 
 if __name__ == "__main__":
