@@ -1,6 +1,6 @@
 import asyncio
 from dataclasses import dataclass
-from openai import AsyncOpenAI
+from openai import AsyncOpenAI, APIConnectionError, BadRequestError
 from prompt_builder import PromptBuilder
 from enums import DemonstrationSelectionMethod, OntologySelectionMethod, OntologyFormat, Polarity
 from sentence_retriever import SentenceRetriever
@@ -10,7 +10,7 @@ from ontology_retriever import OntologyRetriever
 import os
 from dotenv import load_dotenv
 import json
-from sklearn.metrics import f1_score, classification_report
+from sklearn.metrics import classification_report
 
 load_dotenv()
 
@@ -83,13 +83,15 @@ train_data_set = DataSet(train_path)
 
 sentence_retriever = SentenceRetriever(train_data_set)
 ontology_retriever = OntologyRetriever(DataSetOntology(ontology_path))
-demonstration_selection_method = DemonstrationSelectionMethod.SimCSE
-ontology_selection_method = OntologySelectionMethod.Nothing
-ontology_format = OntologyFormat.XML
-top_k = 3
-model = "google/gemma-3-12b-it"
 
-if not jobs:
+def full_run(
+    demonstration_selection_method: DemonstrationSelectionMethod,
+    ontology_selection_method: OntologySelectionMethod,
+    ontology_format: OntologyFormat,
+    top_k: int,
+    model: str,
+):
+    jobs: list[Job] = []
     for sentence, aspects_categories_and_polarities in test_data_set.all_sentences_with_aspects_categories_and_polarities:
         for aspect, aspect_category, true_polarity in aspects_categories_and_polarities:
             prompt = PromptBuilder.build_prompt(
@@ -119,46 +121,59 @@ if not jobs:
                 llm_output=None,
             ))
 
-jobs.sort(key=lambda x: x.prompt) # make use of kv caching
-print(len(jobs))
+    jobs.sort(key=lambda x: x.prompt) # make use of kv caching
+    print(len(jobs))
 
-async def run(job: Job):
+    async def run(job: Job):
+        for attempt in range(3):
+            try:
+                response = await client.chat.completions.create(
+                    model=job.model,
+                    messages=[{"role":"user","content":job.prompt}],
+                    max_tokens=1
+                )
+                answer = response.choices[0].message.content
+                print(answer)
+                job.llm_output = answer
+                return job
+            except APIConnectionError:
+                if attempt == 2:
+                    raise
+            except BadRequestError:
+                job.llm_output = "error"
+                return job
 
-    response = await client.chat.completions.create(
-        model=job.model,
-        messages=[{"role":"user","content":job.prompt}],
-        max_tokens=1
-    )
+    async def main():
+        tasks = [run(job) for job in jobs]
+        return await asyncio.gather(*tasks)
 
-    answer = response.choices[0].message.content
-    print(answer)
-    job.llm_output = answer
-    return job
+    results = asyncio.run(main())
 
-async def main():
-    tasks = [run(job) for job in jobs]
-    return await asyncio.gather(*tasks)
+    evaluation_metrics = calculate_evaluation_metrics(results)
 
-results = asyncio.run(main())
+    evaluation_metrics["test_path"] = test_path
+    evaluation_metrics["train_path"] = train_path
+    evaluation_metrics["ontology_path"] = ontology_path
 
-# # Save the results to a JSONL file
-# with open("results.jsonl", "w") as f:
-#     for job in results:
-#         f.write(json.dumps(job.as_dict()) + "\n")
+    evaluation_metrics["model"] = model
+    evaluation_metrics["demonstration_selection_method"] = demonstration_selection_method.value
+    evaluation_metrics["ontology_selection_method"] = ontology_selection_method.value
+    evaluation_metrics["ontology_format"] = ontology_format.value
+    evaluation_metrics["top_k"] = top_k
 
-evaluation_metrics = calculate_evaluation_metrics(results)
+    with open("final_results_roman.jsonl", "a") as f:
+        f.write(json.dumps(evaluation_metrics) + "\n")
 
-evaluation_metrics["test_path"] = test_path
-evaluation_metrics["train_path"] = train_path
-evaluation_metrics["ontology_path"] = ontology_path
+    print(evaluation_metrics)
 
-evaluation_metrics["model"] = model
-evaluation_metrics["demonstration_selection_method"] = demonstration_selection_method.value
-evaluation_metrics["ontology_selection_method"] = ontology_selection_method.value
-evaluation_metrics["ontology_format"] = ontology_format.value
-evaluation_metrics["top_k"] = top_k
 
-with open("results.jsonl", "a") as f:
-    f.write(json.dumps(evaluation_metrics) + "\n")
-
-print(evaluation_metrics)
+model = "meta-llama/Llama-3.2-3B-Instruct"
+# 3 * 2 * 3 * 4 = 72 options minus 3 for nothing ontology selection method = 69 options
+for demonstration_selection_method in DemonstrationSelectionMethod:
+    for top_k in [0, 3]:
+        for ontology_selection_method in OntologySelectionMethod:
+            if ontology_selection_method == OntologySelectionMethod.Nothing:
+                full_run(demonstration_selection_method, ontology_selection_method, OntologyFormat.XML, top_k, model)
+                break
+            for ontology_format in OntologyFormat:
+                full_run(demonstration_selection_method, ontology_selection_method, ontology_format, top_k, model)
