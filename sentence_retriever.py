@@ -39,6 +39,9 @@ class SentenceRetriever:
         self._simcse_model: SentenceTransformer | None = None
         self._simcse_embeddings: np.ndarray | None = None
 
+        self._graph_lex_nodes_by_sentence: dict[str, list[str]] | None = None
+        self._graph_lex_ontology: Graph | None = None
+
     def _get_corpus_rows(self) -> list[tuple[str, list[tuple[str, Polarity]]]]:
         if self._corpus_rows is None:
             self._corpus_rows = list(self.data_set.all_sentences_with_aspects_and_polarities)
@@ -158,14 +161,22 @@ class SentenceRetriever:
         And return the top k sentences.
         """
 
-        nodes_by_sentence: dict[str, list[str]] = {}
+        if (
+            self._graph_lex_nodes_by_sentence is None
+            or self._graph_lex_ontology is not ontology
+        ):
+            nodes_by_sentence: dict[str, list[str]] = {}
+            for sentence in self.data_set.all_sentences_as_text:
+                nodes = self._get_nodes_from_sentence_via_lex(sentence, ontology)
+                nodes_by_sentence[sentence] = nodes
 
-        for sentence in self.data_set.all_sentences_as_text:
-            nodes = self._get_nodes_from_sentence_via_lex(sentence, ontology)
-            nodes_by_sentence[sentence] = nodes
+                print(sentence, nodes)
+                print("--------------------------------")
 
-            print(sentence, nodes)
-            print("--------------------------------")
+            self._graph_lex_nodes_by_sentence = nodes_by_sentence
+            self._graph_lex_ontology = ontology
+        else:
+            nodes_by_sentence = self._graph_lex_nodes_by_sentence
 
         query_nodes = self._get_nodes_from_sentence_via_lex(query_sentence, ontology)
 
