@@ -64,7 +64,7 @@ class PromptBuilder:
             aspect_category
         )
 
-        prompt = PromptBuilder._build_prompt(
+        prompt = PromptBuilder._build_prompt_1(
             input_sentence=input_sentence,
             aspect=aspect,
             aspect_category=aspect_category,
@@ -143,8 +143,9 @@ class PromptBuilder:
 
         return None
 
+    #our prompt
     @staticmethod
-    def _build_prompt(
+    def _build_prompt_1(
         input_sentence: str,
         aspect: str,
         aspect_category: str,
@@ -155,13 +156,14 @@ class PromptBuilder:
         prompt = (
             "Instruction:\n"
             "Classify the sentiment of the target aspect in the sentence.\n"
-            "Respond with exactly one word: positive, negative, or neutral.\n"
+            "Answer with ONLY one word: positive, negative, or neutral. \n"
+            "Do not explain your answer.\n"
         )
 
         if formatted_ontology:
             prompt += (
                 "\n"
-                f"Make use of this ontology:\n"
+                f"Make use of this domain ontology:\n"
                 f"{formatted_ontology}\n"
             )
 
@@ -174,7 +176,7 @@ class PromptBuilder:
 
         prompt += (
             "\n"
-            f"Now Classify:\n"
+            f"Classify:\n"
             f"Sentence: {input_sentence}\n"
             f"Target Aspect: {aspect}\n"
             f"Target Aspect Category: {aspect_category}\n"
@@ -182,6 +184,151 @@ class PromptBuilder:
         )
 
         return prompt
+
+
+    #quintent's prompt
+    @staticmethod
+    def _build_prompt_2(
+        input_sentence: str,
+        aspect: str,
+        aspect_category: str,
+        formatted_demonstrations: str | None,
+        formatted_ontology: str | None
+    ) -> str:
+        prompt = (
+            "Instruction:\n"
+            "Your task is aspect-based sentiment classification.\n"
+            "Assign a polarity (positive, neutral, negative) to the given aspect(s) in the following sentence based on its context and the provided demonstrations.\n\n"
+        )
+
+        if formatted_ontology:
+            prompt += (
+                "Domain Ontology:\n"
+                f"{formatted_ontology}\n"
+            )
+
+        if formatted_demonstrations:
+            prompt += (
+                "Demonstrations:\n"
+                f"{formatted_demonstrations}\n"
+            )
+
+        prompt += (
+            "Tested sample:\n"
+            f"- Sentence: {input_sentence}\n"
+            f"- Aspects: {aspect}\n"
+            f"- Aspect Category: {aspect_category}\n\n"
+            "Output:\n"
+            "Respond with exactly one word: Positive, Negative, or Neutral.\n"
+            "Do not add any extra text."
+        )
+
+        return prompt
+
+    
+    #step-by-step prompt
+    @staticmethod
+    def _build_prompt_3(
+        input_sentence: str,
+        aspect: str,
+        aspect_category: str,
+        formatted_demonstrations: str | None,
+        formatted_ontology: str | None
+    ) -> str:
+        prompt = (
+            "You are an expert sentiment analyst. Follow these steps:\n"
+            "1. Review the ontology.\n"
+            "2. Examine examples.\n"
+            "3. Analyze the sentence for the aspect.\n"
+            "4. Output only the polarity of the aspect.\n\n"
+        )
+        if formatted_ontology:
+            prompt += f"Ontology:\n{formatted_ontology}\n\n"
+        if formatted_demonstrations:
+            prompt += f"Examples:\n{formatted_demonstrations}\n\n"
+        
+        prompt += (
+            f"Sentence: {input_sentence}\n"
+            f"Aspect: {aspect} ({aspect_category})\n"
+            "Polarity:"
+        )
+        return prompt
+
+
+    #mid-length prompt with explicit instructions to use the ontology and demonstrations
+    @staticmethod
+    def _build_prompt_4(
+        input_sentence: str,
+        aspect: str,
+        aspect_category: str,
+        formatted_demonstrations: str | None,
+        formatted_ontology: str | None
+    ) -> str:
+        prompt = "Analyze sentiment using the domain ontology and demonstrations if given, then classify.\n\n"
+        
+        if formatted_ontology:
+            prompt += f"Ontology:\n{formatted_ontology}\n\n"
+        
+        if formatted_demonstrations:
+            prompt += f"Examples:\n{formatted_demonstrations}\n\n"
+
+        prompt += (
+            "Classify the sentiment of the aspect in the sentence:\n"
+            f"Sentence: {input_sentence}\n"
+            f"Aspect: {aspect}\n"
+            f"Category: {aspect_category}\n\n"
+            "Polarity:\n"
+            "Respond with exactly one word: Positive, Negative, or Neutral. Do not add any extra text."
+        )
+        
+        return prompt
+
+
+    #shorter prompt
+    @staticmethod
+    def _build_prompt_5(
+        input_sentence: str,
+        aspect: str,
+        aspect_category: str,
+        formatted_demonstrations: str | None,
+        formatted_ontology: str | None
+    ) -> str:
+        prompt = "Classify sentiment for the aspect. Use examples if provided.\n\n"
+        
+        if formatted_demonstrations:
+            prompt += f"Examples:\n{formatted_demonstrations}\n\n"
+        
+        if formatted_ontology:
+            prompt += f"Ontology:\n{formatted_ontology}\n\n"
+        
+        prompt += (
+            f"Sentence: {input_sentence}\n"
+            f"Aspect: {aspect} ({aspect_category})\n"
+            "Polarity:"
+        )
+        return prompt
+
+    #even shorter prompt
+    @staticmethod
+    def _build_prompt_6(
+        input_sentence: str,
+        aspect: str,
+        aspect_category: str,
+        formatted_demonstrations: str | None,
+        formatted_ontology: str | None
+    ) -> str:
+        prompt = f"Classify {aspect} in '{input_sentence}'.\n"
+        prompt += "Polarity:\n\n"
+
+        if formatted_ontology:
+            prompt += f"Ontology: {formatted_ontology}.\n\n"
+        if formatted_demonstrations:
+            prompt += f"Examples: {formatted_demonstrations}.\n\n"
+
+        prompt += "Respond with only one word: Positive, Negative, or Neutral."
+        return prompt
+
+
 
     @staticmethod
     def create_emma_zero_shot_prompt(text: str, target: str) -> str:
@@ -242,14 +389,11 @@ class PromptBuilder:
         return statistics.median(token_counts)
 
 if __name__ == "__main__":
-    print("\n--- Emma's Zero-Shot Prompt ---")
-    print(PromptBuilder.create_emma_zero_shot_prompt(
-        text="The food was good",
-        target="food"
-    ))
-
-    exit()
-
+    # print("\n--- Emma's Zero-Shot Prompt ---")
+    # print(PromptBuilder.create_emma_zero_shot_prompt(
+    #     text="The food was good",
+    #     target="food"
+    # ))
 
     load_dotenv()
     train_path = os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TEST_DATA")
@@ -260,12 +404,14 @@ if __name__ == "__main__":
         aspect="food",
         aspect_category="FOOD#QUALITY",
         demonstration_selection_method=DemonstrationSelectionMethod.BM25,
-        top_k=3,
+        top_k=0,
         sentence_retriever=SentenceRetriever(DataSet(train_path)),
         ontology_retriever=OntologyRetriever(DataSetOntology(ontology_path)),
-        ontology_selection_method=OntologySelectionMethod.Partial,
+        ontology_selection_method=OntologySelectionMethod.Nothing,
         ontology_format=OntologyFormat.XML,
     ))
+
+    exit()
 
     test_path = os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TEST_DATA")
     ontology_path = os.getenv("PATH_TO_RESTAURANT_ONTOLOGY")
