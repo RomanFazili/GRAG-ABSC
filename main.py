@@ -74,17 +74,6 @@ client = AsyncOpenAI(
 prompts: list[str] = []
 jobs: list[Job] = []
 
-test_path = os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TEST_DATA")
-train_path = os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TRAIN_DATA")
-ontology_path = os.getenv("PATH_TO_RESTAURANT_ONTOLOGY")
-
-test_data_set = DataSet(test_path)
-train_data_set = DataSet(train_path)
-
-ontology_retriever = OntologyRetriever(DataSetOntology(ontology_path))
-ontology = ontology_retriever.data_set_ontology.get_rdflib_graph()
-sentence_retriever = SentenceRetriever(train_data_set, ontology)
-
 def full_run(
     demonstration_selection_method: DemonstrationSelectionMethod,
     ontology_selection_method: OntologySelectionMethod,
@@ -175,23 +164,47 @@ def full_run(
 
 
 model = "meta-llama/Llama-3.2-3B-Instruct"
+
+# Per domain:
 # 3 * 2 * 3 * 4 = 72 options 
 # Minus nothing ontology selection method (-18)
 # Minus 0 top_k (-24)
 # = 36 options
 
-i = 0
-for top_k in [0, 3]:
-    for demonstration_selection_method in DemonstrationSelectionMethod:
-        for ontology_selection_method in OntologySelectionMethod:
-            for ontology_format in OntologyFormat:
-                full_run(demonstration_selection_method, ontology_selection_method, ontology_format, top_k, model)
-                i += 1
+domains = [
+    (
+        os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TEST_DATA"),
+        os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TRAIN_DATA"),
+        os.getenv("PATH_TO_RESTAURANT_ONTOLOGY"),
+    ),
+    (
+        os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_16_RESTAURANTS_TEST_DATA"),
+        os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_16_RESTAURANTS_TRAIN_DATA"),
+        os.getenv("PATH_TO_RESTAURANT_ONTOLOGY"),
+    ),
+]
 
-                if ontology_selection_method == OntologySelectionMethod.Nothing:
-                    break # We only need 1 ontology format run for Nothing, so we break on the ontology format
+for test_path, train_path, ontology_path in domains:
 
-        if top_k == 0:
-            break # We only need 1 DemonstrationSelectionMethod run for 0 top_k, so we break on the DemonstrationSelectionMethod
+    test_data_set = DataSet(test_path)
+    train_data_set = DataSet(train_path)
 
-print(f"Total runs: {i}")
+    ontology_retriever = OntologyRetriever(DataSetOntology(ontology_path))
+    ontology = ontology_retriever.data_set_ontology.get_rdflib_graph()
+    sentence_retriever = SentenceRetriever(train_data_set, ontology)
+
+    i = 0
+    for top_k in [0, 3]:
+        for demonstration_selection_method in DemonstrationSelectionMethod:
+            for ontology_selection_method in OntologySelectionMethod:
+                for ontology_format in OntologyFormat:
+                    full_run(demonstration_selection_method, ontology_selection_method, ontology_format, top_k, model)
+                    i += 1
+
+                    if ontology_selection_method == OntologySelectionMethod.Nothing:
+                        break # We only need 1 ontology format run for Nothing, so we break on the ontology format
+
+            if top_k == 0:
+                break # We only need 1 DemonstrationSelectionMethod run for 0 top_k, so we break on the DemonstrationSelectionMethod
+
+    print(f"Total runs for this domain: {i}")
