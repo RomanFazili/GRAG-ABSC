@@ -81,8 +81,9 @@ ontology_path = os.getenv("PATH_TO_RESTAURANT_ONTOLOGY")
 test_data_set = DataSet(test_path)
 train_data_set = DataSet(train_path)
 
-sentence_retriever = SentenceRetriever(train_data_set)
 ontology_retriever = OntologyRetriever(DataSetOntology(ontology_path))
+ontology = ontology_retriever.data_set_ontology.get_rdflib_graph()
+sentence_retriever = SentenceRetriever(train_data_set, ontology)
 
 def full_run(
     demonstration_selection_method: DemonstrationSelectionMethod,
