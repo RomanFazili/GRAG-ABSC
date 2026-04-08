@@ -64,7 +64,7 @@ class PromptBuilder:
             aspect_category
         )
 
-        prompt = PromptBuilder._build_prompt_1(
+        prompt = PromptBuilder._build_prompt(
             input_sentence=input_sentence,
             aspect=aspect,
             aspect_category=aspect_category,
@@ -258,7 +258,7 @@ class PromptBuilder:
 
     #mid-length prompt with explicit instructions to use the ontology and demonstrations
     @staticmethod
-    def _build_prompt_4(
+    def _build_prompt(
         input_sentence: str,
         aspect: str,
         aspect_category: str,
