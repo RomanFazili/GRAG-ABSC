@@ -170,9 +170,6 @@ class SentenceRetriever:
                 nodes = self._get_nodes_from_sentence_via_lex(sentence, ontology)
                 nodes_by_sentence[sentence] = nodes
 
-                print(sentence, nodes)
-                print("--------------------------------")
-
             self._graph_lex_nodes_by_sentence = nodes_by_sentence
             self._graph_lex_ontology = ontology
         else:
