@@ -169,12 +169,23 @@ def full_run(
 
 
 model = "meta-llama/Llama-3.2-3B-Instruct"
-# 3 * 2 * 3 * 4 = 72 options minus 3 * 2 * 3 = 18 for nothing ontology selection method = 54 options
-for demonstration_selection_method in DemonstrationSelectionMethod:
-    for top_k in [0, 3]:
+# 3 * 2 * 3 * 4 = 72 options 
+# Minus nothing ontology selection method (-18)
+# Minus 0 top_k (-24)
+# = 36 options
+
+i = 0
+for top_k in [0, 3]:
+    for demonstration_selection_method in DemonstrationSelectionMethod:
         for ontology_selection_method in OntologySelectionMethod:
             for ontology_format in OntologyFormat:
                 full_run(demonstration_selection_method, ontology_selection_method, ontology_format, top_k, model)
+                i += 1
 
                 if ontology_selection_method == OntologySelectionMethod.Nothing:
                     break # We only need 1 ontology format run for Nothing, so we break on the ontology format
+
+        if top_k == 0:
+            break # We only need 1 DemonstrationSelectionMethod run for 0 top_k, so we break on the DemonstrationSelectionMethod
+
+print(f"Total runs: {i}")
