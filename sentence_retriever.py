@@ -149,7 +149,7 @@ class SentenceRetriever:
         return list(dict.fromkeys(accum))
 
 
-    def graph_based_demonstration_selection(self, query_sentence: str, top_k: int):
+    def graph_based_demonstration_selection(self, query_sentence: str, top_k: int) -> list[tuple[str, list[tuple[str, Polarity]]]]:
         """
         For the input sentence, fetch a list (or set?) of nodes that can be found in the ontology
         Do the same for all sentences in the training data
@@ -176,13 +176,14 @@ class SentenceRetriever:
         # Find top k sentences that are most similar to the input sentence using Jaccard similarity
         similarities = []
         q_set = set(query_nodes)
+        corpus = self._get_corpus_rows()
         for sentence, nodes in nodes_by_sentence.items():
             n_set = set(nodes)
             union = q_set | n_set
             similarity = 1.0 if not union else len(q_set & n_set) / len(union)
             similarities.append((sentence, similarity))
         similarities.sort(key=lambda x: x[1], reverse=True)
-        return [sentence for sentence, _ in similarities[:top_k]]
+        return [(sentence, corpus[sentence]) for sentence, _ in similarities[:top_k]]
 
 
 # if __name__ == "__main__":
