@@ -173,17 +173,21 @@ class SentenceRetriever:
 
         query_nodes = self._get_nodes_from_sentence_via_lex(query_sentence)
 
-        # Find top k sentences that are most similar to the input sentence using Jaccard similarity
-        similarities = []
-        q_set = set(query_nodes)
         corpus = self._get_corpus_rows()
+        row_by_sentence: dict[str, tuple[str, list[tuple[str, Polarity]]]] = {
+            row[0]: row for row in corpus
+        }
+
+        # Find top k sentences that are most similar to the input sentence using Jaccard similarity
+        similarities: list[tuple[str, float]] = []
+        q_set = set(query_nodes)
         for sentence, nodes in nodes_by_sentence.items():
             n_set = set(nodes)
             union = q_set | n_set
             similarity = 1.0 if not union else len(q_set & n_set) / len(union)
             similarities.append((sentence, similarity))
-        similarities.sort(key=lambda x: x[1], reverse=True)
-        return [(sentence, corpus[sentence]) for sentence, _ in similarities[:top_k]]
+        similarities.sort(key=lambda pair: pair[1], reverse=True)
+        return [row_by_sentence[sentence] for sentence, _ in similarities[:top_k]]
 
 
 # if __name__ == "__main__":
