@@ -30,8 +30,9 @@ def _normalize_sentence_for_lex_match(sentence: str) -> str:
 class SentenceRetriever:
     """Retrieves demonstration sentences; BM25 / SimCSE indices are built lazily once each."""
 
-    def __init__(self, data_set: DataSet):
+    def __init__(self, data_set: DataSet, ontology: Graph):
         self.data_set = data_set
+        self.ontology = ontology
 
         self._corpus_rows: list[tuple[str, list[tuple[str, Polarity]]]] | None = None
         self._bm25_tokenized: list[list[str]] | None = None
@@ -40,7 +41,6 @@ class SentenceRetriever:
         self._simcse_embeddings: np.ndarray | None = None
 
         self._graph_lex_nodes_by_sentence: dict[str, list[str]] | None = None
-        self._graph_lex_ontology: Graph | None = None
 
     def _get_corpus_rows(self) -> list[tuple[str, list[tuple[str, Polarity]]]]:
         if self._corpus_rows is None:
@@ -111,7 +111,7 @@ class SentenceRetriever:
         top_indices = scores[0].argsort(descending=True)[:top_k].cpu().tolist()
         return [corpus[int(i)] for i in top_indices]
 
-    def _get_nodes_from_sentence_via_lex(self, sentence: str, ontology: Graph) -> list[str]:
+    def _get_nodes_from_sentence_via_lex(self, sentence: str) -> list[str]:
         """
         Return local names of every class whose ``restaurant:lex`` occurs in ``sentence`` (case-insensitive)
         and every **named** direct superclass from ``rdfs:subClassOf``, as a single deduplicated list.
@@ -137,7 +137,7 @@ class SentenceRetriever:
             }}
         }}
         """
-        qres = ontology.query(sparql_query)
+        qres = self.ontology.query(sparql_query)
 
         def _local_name(node: object) -> str:
             s = str(node).rstrip("/#")
@@ -149,7 +149,7 @@ class SentenceRetriever:
         return list(dict.fromkeys(accum))
 
 
-    def graph_based_demonstration_selection(self, query_sentence: str, top_k: int, ontology: Graph):
+    def graph_based_demonstration_selection(self, query_sentence: str, top_k: int):
         """
         For the input sentence, fetch a list (or set?) of nodes that can be found in the ontology
         Do the same for all sentences in the training data
@@ -161,21 +161,17 @@ class SentenceRetriever:
         And return the top k sentences.
         """
 
-        if (
-            self._graph_lex_nodes_by_sentence is None
-            or self._graph_lex_ontology is not ontology
-        ):
+        if self._graph_lex_nodes_by_sentence is None:
             nodes_by_sentence: dict[str, list[str]] = {}
             for sentence in self.data_set.all_sentences_as_text:
-                nodes = self._get_nodes_from_sentence_via_lex(sentence, ontology)
+                nodes = self._get_nodes_from_sentence_via_lex(sentence)
                 nodes_by_sentence[sentence] = nodes
 
             self._graph_lex_nodes_by_sentence = nodes_by_sentence
-            self._graph_lex_ontology = ontology
         else:
             nodes_by_sentence = self._graph_lex_nodes_by_sentence
 
-        query_nodes = self._get_nodes_from_sentence_via_lex(query_sentence, ontology)
+        query_nodes = self._get_nodes_from_sentence_via_lex(query_sentence)
 
         # Find top k sentences that are most similar to the input sentence using Jaccard similarity
         similarities = []
@@ -199,11 +195,11 @@ if __name__ == "__main__":
     from data_set_ontology import DataSetOntology
     file_path = os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TRAIN_DATA")
     assert file_path
-    sentence_retriever = SentenceRetriever(DataSet(file_path))
 
     ontology_path = os.getenv("PATH_TO_RESTAURANT_ONTOLOGY")
     data_set_ontology = DataSetOntology(ontology_path)
     g = data_set_ontology.get_rdflib_graph()
+    sentence_retriever = SentenceRetriever(DataSet(file_path), g)
     print(sentence_retriever._get_nodes_from_sentence_via_lex("I enjoyed the green tea.", g))
     print(sentence_retriever._get_nodes_from_sentence_via_lex("I enjoyed the green ravelling tea.", g))
     print(sentence_retriever.graph_based_demonstration_selection("We very much enjoyed the restaurant and the food.", 3, g))

@@ -93,9 +93,8 @@ class PromptBuilder:
                 input_sentence, top_k
             )
         elif demonstration_selection_method == DemonstrationSelectionMethod.Graph:
-            raise NotImplementedError("Graph-based demonstration selection is not implemented yet")
             demonstration_sentences = sentence_retriever.graph_based_demonstration_selection(
-                input_sentence, top_k
+                input_sentence, top_k, sentence_retriever.data_set.ontology_retriever.data_set_ontology.get_rdflib_graph()
             )
 
         if not demonstration_sentences:
@@ -361,8 +360,9 @@ class PromptBuilder:
         hf_tok = os.getenv("HF_TOKEN")
         tokenizer = AutoTokenizer.from_pretrained(model.value, token=hf_tok)
 
-        sentence_retriever = SentenceRetriever(DataSet(test_path))
         ontology_retriever = OntologyRetriever(DataSetOntology(ontology_path))
+        ontology = ontology_retriever.data_set_ontology.get_rdflib_graph()
+        sentence_retriever = SentenceRetriever(DataSet(test_path), ontology)
 
         token_counts: list[int] = []
         for demonstration_selection_method in DemonstrationSelectionMethod:
@@ -400,15 +400,16 @@ if __name__ == "__main__":
     load_dotenv()
     train_path = os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TEST_DATA")
     ontology_path = os.getenv("PATH_TO_RESTAURANT_ONTOLOGY")
-
+    ontology_retriever = OntologyRetriever(DataSetOntology(ontology_path))
+    ontology = ontology_retriever.data_set_ontology.get_rdflib_graph()
     print(PromptBuilder.build_prompt(
         input_sentence="The food was good",
         aspect="food",
         aspect_category="FOOD#QUALITY",
         demonstration_selection_method=DemonstrationSelectionMethod.BM25,
         top_k=0,
-        sentence_retriever=SentenceRetriever(DataSet(train_path)),
-        ontology_retriever=OntologyRetriever(DataSetOntology(ontology_path)),
+        sentence_retriever=SentenceRetriever(DataSet(train_path), ontology),
+        ontology_retriever=ontology_retriever,
         ontology_selection_method=OntologySelectionMethod.Nothing,
         ontology_format=OntologyFormat.XML,
     ))
