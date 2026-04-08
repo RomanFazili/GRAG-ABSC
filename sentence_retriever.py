@@ -175,8 +175,11 @@ class SentenceRetriever:
 
         # Find top k sentences that are most similar to the input sentence using Jaccard similarity
         similarities = []
+        q_set = set(query_nodes)
         for sentence, nodes in nodes_by_sentence.items():
-            similarity = len(set(query_nodes) & set(nodes)) / len(set(query_nodes) | set(nodes))
+            n_set = set(nodes)
+            union = q_set | n_set
+            similarity = 1.0 if not union else len(q_set & n_set) / len(union)
             similarities.append((sentence, similarity))
         similarities.sort(key=lambda x: x[1], reverse=True)
         return [sentence for sentence, _ in similarities[:top_k]]
