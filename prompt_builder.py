@@ -219,7 +219,7 @@ class PromptBuilder:
             f"- Aspects: {aspect}\n"
             f"- Aspect Category: {aspect_category}\n\n"
             "Output:\n"
-            "Respond with exactly one word: Positive, Negative, or Neutral.\n"
+            "Respond with exactly one word: positive, negative, or neutral.\n"
             "Do not add any extra text."
         )
 
@@ -240,7 +240,7 @@ class PromptBuilder:
             "1. Review the ontology.\n"
             "2. Examine examples.\n"
             "3. Analyze the sentence for the aspect.\n"
-            "4. Output only the polarity of the aspect.\n\n"
+            "4. Output only the polarity of the aspect (positive, negative, or neutral).\n\n"
         )
         if formatted_ontology:
             prompt += f"Ontology:\n{formatted_ontology}\n\n"
@@ -250,7 +250,8 @@ class PromptBuilder:
         prompt += (
             f"Sentence: {input_sentence}\n"
             f"Aspect: {aspect} ({aspect_category})\n"
-            "Polarity:"
+            "Polarity:\n"
+            "Respond with exactly one word: positive, negative, or neutral. Do not add any extra text."
         )
         return prompt
 
@@ -278,7 +279,7 @@ class PromptBuilder:
             f"Aspect: {aspect}\n"
             f"Category: {aspect_category}\n\n"
             "Polarity:\n"
-            "Respond with exactly one word: Positive, Negative, or Neutral. Do not add any extra text."
+            "Respond with exactly one word: positive, negative, or neutral. Do not add any extra text."
         )
         
         return prompt
@@ -304,7 +305,8 @@ class PromptBuilder:
         prompt += (
             f"Sentence: {input_sentence}\n"
             f"Aspect: {aspect} ({aspect_category})\n"
-            "Polarity:"
+            "Polarity:\n"
+            "Respond with exactly one word: positive, negative, or neutral. Do not add any extra text."
         )
         return prompt
 
@@ -325,7 +327,7 @@ class PromptBuilder:
         if formatted_demonstrations:
             prompt += f"Examples: {formatted_demonstrations}.\n\n"
 
-        prompt += "Respond with only one word: Positive, Negative, or Neutral."
+        prompt += "Respond with only one word: positive, negative, or neutral."
         return prompt
 
 

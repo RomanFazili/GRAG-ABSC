@@ -84,10 +84,10 @@ train_data_set = DataSet(train_path)
 sentence_retriever = SentenceRetriever(train_data_set)
 ontology_retriever = OntologyRetriever(DataSetOntology(ontology_path))
 demonstration_selection_method = DemonstrationSelectionMethod.SimCSE
-ontology_selection_method = OntologySelectionMethod.Full
+ontology_selection_method = OntologySelectionMethod.Nothing
 ontology_format = OntologyFormat.XML
-top_k = 0
-model = "meta-llama/Llama-3.2-3B-Instruct"
+top_k = 3
+model = "google/gemma-3-12b-it"
 
 if not jobs:
     for sentence, aspects_categories_and_polarities in test_data_set.all_sentences_with_aspects_categories_and_polarities:
