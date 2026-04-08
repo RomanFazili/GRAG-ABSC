@@ -94,7 +94,7 @@ class PromptBuilder:
             )
         elif demonstration_selection_method == DemonstrationSelectionMethod.Graph:
             demonstration_sentences = sentence_retriever.graph_based_demonstration_selection(
-                input_sentence, top_k, sentence_retriever.data_set.ontology_retriever.data_set_ontology.get_rdflib_graph()
+                input_sentence, top_k
             )
 
         if not demonstration_sentences:
