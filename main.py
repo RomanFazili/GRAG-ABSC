@@ -132,7 +132,7 @@ def full_run(
                 return job
             except APIConnectionError:
                 if attempt == 2:
-                    raise
+                    break
             except BadRequestError:
                 break
 
