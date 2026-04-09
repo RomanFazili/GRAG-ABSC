@@ -55,10 +55,10 @@ def calculate_evaluation_metrics(finished_jobs: list[Job]) -> dict:
     """Calculates weighted and macro F1 scores from predictions"""
     if not finished_jobs:
         raise ValueError("No finished jobs to calculate evaluation metrics")
-    
+
     y_true_labels: list[str] = [job.true_polarity.value for job in finished_jobs]
     y_pred_labels: list[str] = [job.llm_output for job in finished_jobs]
-    
+
     return {
         "classification_report": classification_report(y_true_labels, y_pred_labels, output_dict=True),
         "total_predictions": len(finished_jobs),
@@ -111,7 +111,7 @@ def full_run(
                 llm_output=None,
             ))
 
-    jobs.sort(key=lambda x: x.prompt) # make use of kv caching
+    jobs.sort(key=lambda x: x.prompt)  # make use of kv caching
     print(len(jobs))
 
     async def run(job: Job):
@@ -166,7 +166,7 @@ def full_run(
 model = "meta-llama/Llama-3.2-3B-Instruct"
 
 # Per domain:
-# 3 * 2 * 3 * 4 = 72 options 
+# 3 * 2 * 3 * 4 = 72 options
 # Minus nothing ontology selection method (-18)
 # Minus 0 top_k (-24)
 # = 36 options
@@ -175,11 +175,6 @@ domains = [
     (
         os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TEST_DATA"),
         os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TRAIN_DATA"),
-        os.getenv("PATH_TO_RESTAURANT_ONTOLOGY"),
-    ),
-    (
-        os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_16_RESTAURANTS_TEST_DATA"),
-        os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_16_RESTAURANTS_TRAIN_DATA"),
         os.getenv("PATH_TO_RESTAURANT_ONTOLOGY"),
     ),
 ]
