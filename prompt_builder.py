@@ -37,7 +37,7 @@ class PromptBuilder:
     def build_prompt(
         input_sentence: str,
         aspect: str,
-        aspect_category: str,
+        aspect_category: str | None,
         demonstration_selection_method: DemonstrationSelectionMethod,
         top_k: int,
         sentence_retriever: SentenceRetriever,
@@ -49,6 +49,9 @@ class PromptBuilder:
         assert isinstance(demonstration_selection_method, DemonstrationSelectionMethod)
         assert isinstance(ontology_selection_method, OntologySelectionMethod)
         assert isinstance(ontology_format, OntologyFormat)
+
+        if aspect_category == '':
+            aspect_category = None
 
         formatted_demonstrations = PromptBuilder._format_demonstrations(
             demonstration_selection_method,
@@ -119,13 +122,15 @@ class PromptBuilder:
         ontology_retriever: OntologyRetriever,
         ontology_selection_method: OntologySelectionMethod,
         ontology_format: OntologyFormat,
-        aspect_category: str,
+        aspect_category: str | None,
     ) -> str | None:
 
         selected_ontology: Graph | None = None
         if ontology_selection_method == OntologySelectionMethod.Nothing:
             selected_ontology = None
         elif ontology_selection_method == OntologySelectionMethod.Partial:
+            if aspect_category is None:
+                return None
             selected_ontology = ontology_retriever.verbalize(aspect_category=aspect_category)
         elif ontology_selection_method == OntologySelectionMethod.Full:
             selected_ontology = ontology_retriever.data_set_ontology.get_rdflib_graph()
@@ -260,7 +265,7 @@ class PromptBuilder:
     def _build_prompt(
         input_sentence: str,
         aspect: str,
-        aspect_category: str,
+        aspect_category: str | None,
         formatted_demonstrations: str | None,
         formatted_ontology: str | None
     ) -> str:
@@ -276,13 +281,17 @@ class PromptBuilder:
             "Classify the sentiment of the aspect in the sentence:\n"
             f"Sentence: {input_sentence}\n"
             f"Aspect: {aspect}\n"
-            f"Category: {aspect_category}\n\n"
+        )
+
+        if aspect_category:
+            prompt += f"Category: {aspect_category}\n\n"
+
+        prompt += (
             "Polarity:\n"
             "Respond with exactly one word: positive, negative, or neutral. Do not add any extra text."
         )
-        
-        return prompt
 
+        return prompt
 
     #shorter prompt
     @staticmethod
@@ -400,19 +409,19 @@ if __name__ == "__main__":
     # ))
 
     load_dotenv()
-    train_path = os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TEST_DATA")
+    train_path = os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_14_RESTAURANTS_TEST_DATA")
     ontology_path = os.getenv("PATH_TO_RESTAURANT_ONTOLOGY")
     ontology_retriever = OntologyRetriever(DataSetOntology(ontology_path))
     ontology = ontology_retriever.data_set_ontology.get_rdflib_graph()
     print(PromptBuilder.build_prompt(
         input_sentence="The food was good",
         aspect="food",
-        aspect_category="FOOD#QUALITY",
+        aspect_category="",
         demonstration_selection_method=DemonstrationSelectionMethod.BM25,
         top_k=0,
         sentence_retriever=SentenceRetriever(DataSet(train_path), ontology),
         ontology_retriever=ontology_retriever,
-        ontology_selection_method=OntologySelectionMethod.Nothing,
+        ontology_selection_method=OntologySelectionMethod.Partial,
         ontology_format=OntologyFormat.XML,
     ))
 
