@@ -283,8 +283,8 @@ class PromptBuilder:
             f"Aspect: {aspect}\n"
         )
 
-        if aspect_category:
-            prompt += f"Category: {aspect_category}\n\n"
+        # if aspect_category:
+        #     prompt += f"Category: {aspect_category}\n\n"
 
         prompt += (
             "Polarity:\n"

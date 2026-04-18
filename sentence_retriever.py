@@ -190,14 +190,6 @@ class SentenceRetriever:
         return [row_by_sentence[sentence] for sentence, _ in similarities[:top_k]]
 
 
-# if __name__ == "__main__":
-#     load_dotenv()
-#     file_path = os.getenv("PATH_TO_PREPROCESSED_SEMEVAL_15_RESTAURANTS_TRAIN_DATA")
-#     assert file_path
-#     sentence_retriever = SentenceRetriever(DataSet(file_path))
-#     print(sentence_retriever.BM25_demonstration_selection("The food was good", 3))
-#     print(sentence_retriever.SimCSE_demonstration_selection("The food was good", 3))
-
 if __name__ == "__main__":
     load_dotenv()
     from data_set_ontology import DataSetOntology
